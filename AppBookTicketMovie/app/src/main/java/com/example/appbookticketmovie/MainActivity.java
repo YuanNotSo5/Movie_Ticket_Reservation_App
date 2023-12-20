@@ -29,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 //        NavigationUI.setupWithNavController(binding.navView, navController);
 
+//        GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
+//        FirebaseOptions options = new FirebaseOptions.Builder()
+//                .setCredentials(credentials)
+//                .setProjectId(projectId)
+//                .build();
+//        FirebaseApp.initializeApp(options);
+
         Intent register = new Intent(this, RegisterActivity.class);
         startActivity(register);
     }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.appbookticketmovie.Models.User;
 import com.example.appbookticketmovie.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,20 +19,31 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
     EditText etUsername, etEmail, etFullname, etPassword, etConfirmPassword;
     Button btnRegister;
     TextView warning, login;
-
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private CollectionReference userDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        userDB = db.collection("Users");
 
         etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
@@ -95,22 +107,41 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 if(status){
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    String count = String.valueOf(countUser());
+                    User user = new User(Long.valueOf(count)+1,username, email, fullname);
+
+                    DocumentReference result = userDB.document(email);
+
+                    result.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    Toast.makeText(RegisterActivity.this, "Succeed", Toast.LENGTH_SHORT).show();
+                                public void onSuccess(Void unused) {
                                     warning.setVisibility(View.GONE);
 
-                                    Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
-                                    startActivity(login);
+                                    mAuth.createUserWithEmailAndPassword(email, password)
+                                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                                @Override
+                                                public void onSuccess(AuthResult authResult) {
+                                                    Toast.makeText(RegisterActivity.this, "Create Account Successfully", Toast.LENGTH_SHORT).show();
+                                                    warning.setVisibility(View.GONE);
+
+                                                    Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
+                                                    startActivity(login);
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    System.out.println(e);
+                                                    Toast.makeText(RegisterActivity.this, "Create New Account Failed", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    System.out.println(e);
-                                    Toast.makeText(RegisterActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                    System.out.println("Error: "+e);
+                                    Toast.makeText(RegisterActivity.this, "Create New User Failed", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
@@ -125,5 +156,14 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public int countUser(){
+        Task<QuerySnapshot> data = userDB.get();
+        if(data.isSuccessful()){
+            List<DocumentSnapshot> d = data.getResult().getDocuments();
+            return ((List<?>) d).size();
+        }
+        return 0;
     }
 }
