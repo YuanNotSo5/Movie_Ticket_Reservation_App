@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Add network state permission (optional) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,18 +15,8 @@
         android:theme="@style/Theme.AppBookTicketMovie"
         tools:targetApi="31">
         <activity
-            android:name=".Controllers.RegisterActivity"
+            android:name="com.example.appbookticketmovie.HomeActivities.DetailActivity"
             android:exported="false" />
-        <activity
-            android:name=".Controllers.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivities.DetailActivity"
-            android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
