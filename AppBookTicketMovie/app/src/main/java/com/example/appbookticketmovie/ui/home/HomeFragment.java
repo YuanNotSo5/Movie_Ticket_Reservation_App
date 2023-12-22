@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,13 +28,15 @@ import com.android.volley.toolbox.Volley;
 import com.example.appbookticketmovie.Adapter.CategoryListAdapter;
 import com.example.appbookticketmovie.Adapter.FilmListAdapter;
 import com.example.appbookticketmovie.Adapter.SliderAdapters;
-import com.example.appbookticketmovie.Domain.GenreItem;
-import com.example.appbookticketmovie.Domain.ListFilm;
+import com.example.appbookticketmovie.Models.FilmItem;
+import com.example.appbookticketmovie.Models.GenreItem;
+import com.example.appbookticketmovie.Models.ListFilm;
 import com.example.appbookticketmovie.Domain.SliderItems;
 import com.example.appbookticketmovie.R;
+import com.example.appbookticketmovie.Services.FilmService;
+import com.example.appbookticketmovie.Services.GenreService;
 import com.example.appbookticketmovie.databinding.FragmentHomeBinding;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +55,7 @@ public class HomeFragment extends Fragment {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+         ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -69,66 +72,119 @@ public class HomeFragment extends Fragment {
         recyclerViewBestMovies.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         loading1 = binding.progressBar;
 
+        //Recycler Category
         recyclerViewCategory = binding.recyclerViewCate;
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         loading2 = binding.progressBar2;
 
-
         banners();
-
         sendRequest();
         sendRequestCategory();
         return root;
     }
 
+//    private void sendRequest() {
+//        mRequestQueue = Volley.newRequestQueue(requireContext());
+//        loading1.setVisibility(View.VISIBLE);
+//        mStringRequest=new StringRequest(Request.Method.GET, "https://moviesapi.ir/api/v1/movies?page=1", new Response.Listener<String>() {
+//
+//            @Override
+//            public void onResponse(String response) {
+//                Gson gson = new Gson();
+//                loading1.setVisibility(View.GONE);
+//                ListFilm items = gson.fromJson(response,ListFilm.class);
+//                adapterBestMovies = new FilmListAdapter(items);
+//                recyclerViewBestMovies.setAdapter((adapterBestMovies));
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                loading1.setVisibility(View.GONE);
+//                Log.i("UiLover", "OnError"+error.toString());
+//            }
+//        });
+//
+//        mRequestQueue.add(mStringRequest);
+//    }
+
     private void sendRequest() {
         mRequestQueue = Volley.newRequestQueue(requireContext());
         loading1.setVisibility(View.VISIBLE);
-        mStringRequest=new StringRequest(Request.Method.GET, "https://moviesapi.ir/api/v1/movies?page=1", new Response.Listener<String>() {
 
+        FilmService listFilm = new FilmService();
+        listFilm.getFilmCloudStore(new FilmService.OnFilmDataReceivedListener() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
+            public void onFilmDataReceived(ArrayList<FilmItem> listFilms) {
                 loading1.setVisibility(View.GONE);
-                ListFilm items = gson.fromJson(response,ListFilm.class);
+                ListFilm items = new ListFilm(listFilms);
                 adapterBestMovies = new FilmListAdapter(items);
                 recyclerViewBestMovies.setAdapter((adapterBestMovies));
             }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMessage) {
                 loading1.setVisibility(View.GONE);
-                Log.i("UiLover", "OnError"+error.toString());
+                Log.i("UiLover", "OnError"+errorMessage);
             }
         });
-
-        mRequestQueue.add(mStringRequest);
     }
 
+    //Get Category
+//    private void sendRequestCategory() {
+//        mRequestQueue = Volley.newRequestQueue(requireContext());
+//        loading2.setVisibility(View.VISIBLE);
+//
+//
+//        GenreService genreService = new GenreService();
+//        genreService.getGenre(new GenreService.OnGenreDataReceivedListener() {
+//            @Override
+//            public void onGenreDataReceived(ArrayList<GenreItem> listGenre) {
+//                Log.d("My Tag", String.valueOf(listGenre));
+//                adaterCategory = new CategoryListAdapter(listGenre);
+//                recyclerViewCategory.setAdapter((adaterCategory));
+//
+//            }
+//        });
+
+//        mStringRequest2=new StringRequest(Request.Method.GET, "https://moviesapi.ir/api/v1/genres", new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Gson gson = new Gson();
+//                loading2.setVisibility(View.GONE);
+//                ArrayList<GenreItem> catList = gson.fromJson(response,new TypeToken<ArrayList<GenreItem>>() {}.getType());
+//                adaterCategory = new CategoryListAdapter(catList);
+//                recyclerViewCategory.setAdapter((adaterCategory));
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                loading2.setVisibility(View.GONE);
+//                Log.i("UiLover", "OnError"+error.toString());
+//            }
+//        });
+//        mRequestQueue.add(mStringRequest2);
+//    }
     private void sendRequestCategory() {
         mRequestQueue = Volley.newRequestQueue(requireContext());
         loading2.setVisibility(View.VISIBLE);
-        mStringRequest2=new StringRequest(Request.Method.GET, "https://moviesapi.ir/api/v1/genres", new Response.Listener<String>() {
+
+        GenreService genreService = new GenreService();
+        genreService.getGenreCloudStore(new GenreService.OnGenreDataReceivedListener() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                loading2.setVisibility(View.GONE);
-                ArrayList<GenreItem> catList = gson.fromJson(response,new TypeToken<ArrayList<GenreItem>>() {}.getType());
-                adaterCategory = new CategoryListAdapter(catList);
+            public void onGenreDataReceived(ArrayList<GenreItem> listGenre) {
+                adaterCategory = new CategoryListAdapter(listGenre);
                 recyclerViewCategory.setAdapter((adaterCategory));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
                 loading2.setVisibility(View.GONE);
-                Log.i("UiLover", "OnError"+error.toString());
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("My Tag", errorMessage);
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
-        mRequestQueue.add(mStringRequest2);
     }
 
-
-
+    //Get Banner Slider
     private void banners(){
         List<SliderItems> sliderItems = new ArrayList<>();
         sliderItems.add(new SliderItems(R.drawable.wide1));
@@ -162,13 +218,13 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
     private Runnable sliderRunnable = new Runnable() {
         @Override
         public void run() {
             viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
         }
     };
-
     @Override
     public void onPause() {
         super.onPause();

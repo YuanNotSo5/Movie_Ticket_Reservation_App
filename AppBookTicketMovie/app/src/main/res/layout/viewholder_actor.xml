@@ -10,6 +10,8 @@
 
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:minHeight="70dp"
+        android:maxHeight="70dp"
         android:scaleType="centerCrop"
         android:layout_margin="5dp"
         app:shapeAppearanceOverlay="@style/roundedImageView"
@@ -18,4 +20,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/txtNameActor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/itemImages"
+        app:layout_constraintStart_toStartOf="@+id/itemImages"
+        app:layout_constraintTop_toBottomOf="@+id/itemImages" />
 </androidx.constraintlayout.widget.ConstraintLayout>

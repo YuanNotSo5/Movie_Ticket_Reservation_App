@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivities.DetailActivity"
-    android:background="@color/main_color">
+    android:background="@color/main_color"
+    tools:context=".HomeActivities.DetailActivity">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView2"
@@ -13,8 +13,10 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -22,9 +24,9 @@
 
             <ImageView
                 android:id="@+id/detailPic"
-                android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="407dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,24 +57,28 @@
                     android:id="@+id/backImg"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:background="@color/blue_color"
-
+                    android:background="@drawable/background_circle"
                     android:padding="8dp"
+                    android:src="@drawable/baseline_arrow_back_32"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/baseline_arrow_back_32"
+                    tools:src="@drawable/baseline_arrow_back_32"
                     tools:srcCompat="@drawable/baseline_arrow_back_32" />
 
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:background="@color/blue_color"
+                    android:background="@drawable/background_circle"
+                    android:padding="8dp"
+                    android:src="@drawable/baseline_favorite_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/baseline_favorite_24"
+                    tools:src="@drawable/baseline_favorite_24"
                     tools:srcCompat="@drawable/baseline_favorite_24" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -96,6 +102,7 @@
                     android:drawablePadding="5dp"
                     android:text="0"
                     android:textColor="@color/white"
+                    android:textSize="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -109,6 +116,7 @@
                     android:drawablePadding="5dp"
                     android:text="0"
                     android:textColor="@color/white"
+                    android:textSize="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/movieStar"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -121,7 +129,8 @@
                 android:layout_marginBottom="16dp"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="35dp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout2" />
@@ -129,12 +138,36 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/genreView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailPic">
 
             </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/genreView">
+
+                <WebView
+                    android:id="@+id/trailerContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:minHeight="250dp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView5"
@@ -144,22 +177,30 @@
                 android:layout_marginTop="16dp"
                 android:text="Nội Dung"
                 android:textColor="@color/yellow_color"
-                android:textSize="16dp"
+                android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/genreView" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
-            <TextView
+
+
+            <com.borjabravo.readmoretextview.ReadMoreTextView
                 android:id="@+id/movieSummaryContextTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 android:text="Nội dung tóm tắt phim"
                 android:textColor="@color/white"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/textView5"
+                app:trimExpandedText="@string/read_less"
+                app:trimCollapsedText="@string/read_more"
+                app:trimMode="trimModeLength"
+                app:trimLength="25"
+                app:colorClickableText="@color/yellow_color"/>
 
             <TextView
                 android:id="@+id/textView7"
@@ -168,27 +209,21 @@
                 android:layout_marginTop="16dp"
                 android:text="Diễn Viên"
                 android:textColor="@color/yellow_color"
-                android:textSize="16dp"
+                android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="@+id/movieSummaryContextTxt"
                 app:layout_constraintTop_toBottomOf="@+id/movieSummaryContextTxt" />
-
-            <TextView
-                android:id="@+id/movieActorInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="test"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="@+id/textView7"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/imagesRecycler"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/movieActorInfo"
-                app:layout_constraintTop_toBottomOf="@+id/movieActorInfo" />
+                app:layout_constraintStart_toStartOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+            </androidx.recyclerview.widget.RecyclerView>
 
             <ProgressBar
                 android:id="@+id/progressBarDetail"
@@ -201,7 +236,73 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đánh giá và Phản hồi"
+                android:textColor="@color/yellow_color"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/imagesRecycler"
+                app:layout_constraintTop_toBottomOf="@+id/imagesRecycler" />
+
+            <LinearLayout
+                android:id="@+id/commentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+                
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/commentContainer" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bookTicketBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Đặt Vé"
+                app:iconTint="#00FFFFFF" />
+
+            <Button
+                android:id="@+id/sharingBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:text="0"
+                app:icon="@drawable/baseline_share_24"
+                app:iconPadding="8dp" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

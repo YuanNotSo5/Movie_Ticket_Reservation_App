@@ -5,8 +5,15 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,9 +27,13 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.appbookticketmovie.Adapter.ActorsListAdapter;
 import com.example.appbookticketmovie.Adapter.CategoryEachFilmListAdapter;
-import com.example.appbookticketmovie.Domain.FilmItem;
+import com.example.appbookticketmovie.MainActivity;
+import com.example.appbookticketmovie.Models.FilmItem;
 import com.example.appbookticketmovie.R;
+import com.example.appbookticketmovie.Services.FilmService;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -35,6 +46,7 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapterActorList, adapterCategory;
     private RecyclerView recyclerViewActors, recyclerViewCategory;
     private NestedScrollView scrollView;
+    private WebView trailerContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,17 +59,15 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void sendRequest(){
-        mRequestQueue = Volley.newRequestQueue(this);
+        FilmService film = new FilmService();
         progressBar.setVisibility(View.VISIBLE);
         scrollView.setVisibility(View.GONE);
-        mStringRequest = new StringRequest(Request.Method.GET, "https://moviesapi.ir/api/v1/movies/" + idFilm, new Response.Listener<String>() {
+        film.getFilmById(idFilm, new FilmService.OnFilmDataReceivedListener() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
+            public void onFilmDataReceived(ArrayList<FilmItem> listFilms) {
                 progressBar.setVisibility(View.GONE);
                 scrollView.setVisibility(View.VISIBLE);
-                FilmItem item = gson.fromJson(response, FilmItem.class);
-
+                FilmItem item = listFilms.get(0);
                 Glide.with(DetailActivity.this)
                         .load(item.getPoster())
                         .into(pic2);
@@ -65,9 +75,32 @@ public class DetailActivity extends AppCompatActivity {
                 movieRateTxt.setText(item.getImdbRating());
                 movieTimeTxt.setText(item.getRuntime());
                 movieSumInfo.setText(item.getPlot());
-                movieActorInfo.setText(item.getActors());
-                if(item.getImages()!=null){
-                    adapterActorList=new ActorsListAdapter(item.getImages());
+
+                String videoLink = item.getTrailer();
+                String video =
+                       "<iframe width=\"100%\" " +
+                               "height=\"100%\" " +
+                               "src=\""+videoLink+"\" " +
+                               "title=\"YouTube video player\" frameborder=\"0\" " +
+                               "allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+
+                trailerContainer.loadData(video, "text/html", "utf-8");
+                trailerContainer.getSettings().setJavaScriptEnabled(true);
+                trailerContainer.getSettings().setLoadWithOverviewMode(true);
+                trailerContainer.getSettings().setUseWideViewPort(true);
+                trailerContainer.getSettings().setDomStorageEnabled(true);
+
+                trailerContainer.loadData(video, "text/html", "utf-8");
+                trailerContainer.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                        super.onReceivedError(view, request, error);
+                        Log.e("WebView", "Error: " + error.getDescription());
+                    }
+                });
+
+                if(item.getActors()!=null){
+                    adapterActorList=new ActorsListAdapter(item.getActors());
                     recyclerViewActors.setAdapter(adapterActorList);
                 }
                 if(item.getGenres()!=null){
@@ -75,14 +108,58 @@ public class DetailActivity extends AppCompatActivity {
                     recyclerViewCategory.setAdapter(adapterCategory);
                 }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMessage) {
                 progressBar.setVisibility(View.GONE);
             }
         });
-        mRequestQueue.add(mStringRequest);
     }
+
+//    private void sendRequest(){
+//        mRequestQueue = Volley.newRequestQueue(this);
+//        progressBar.setVisibility(View.VISIBLE);
+//        scrollView.setVisibility(View.GONE);
+//        String video = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/m-4YnwBwaGk?si=1YOO6k29uzkk4wSZ\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
+//        mStringRequest = new StringRequest(Request.Method.GET, "https://moviesapi.ir/api/v1/movies/" + idFilm, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Gson gson = new Gson();
+//                progressBar.setVisibility(View.GONE);
+//                scrollView.setVisibility(View.VISIBLE);
+//                FilmItem item = gson.fromJson(response, FilmItem.class);
+//
+//                Glide.with(DetailActivity.this)
+//                        .load(item.getPoster())
+//                        .into(pic2);
+//                titleTxt.setText(item.getTitle());
+//                movieRateTxt.setText(item.getImdbRating());
+//                movieTimeTxt.setText(item.getRuntime());
+//                movieSumInfo.setText(item.getPlot());
+////                movieActorInfo.setText(item.getActors());
+//                //Set trailer
+//                trailerContainer.loadData(video, "text/html","uft-8");
+//                trailerContainer.getSettings().setJavaScriptEnabled(true);
+//                trailerContainer.setWebChromeClient(new WebChromeClient());
+//
+//
+//                if(item.getImages()!=null){
+//                    adapterActorList=new ActorsListAdapter(item.getImages());
+//                    recyclerViewActors.setAdapter(adapterActorList);
+//                }
+//                if(item.getGenres()!=null){
+//                    adapterCategory=new CategoryEachFilmListAdapter(item.getGenres());
+//                    recyclerViewCategory.setAdapter(adapterCategory);
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                progressBar.setVisibility(View.GONE);
+//            }
+//        });
+//        mRequestQueue.add(mStringRequest);
+//    }
 
     private void initView(){
         titleTxt = findViewById(R.id.movieNameTxt);
@@ -92,18 +169,19 @@ public class DetailActivity extends AppCompatActivity {
         movieRateTxt = findViewById(R.id.movieStar);
         movieTimeTxt = findViewById(R.id.movieTime);
         movieSumInfo = findViewById(R.id.movieSummaryContextTxt);
-        movieActorInfo = findViewById(R.id.movieActorInfo);
         backImg = findViewById(R.id.backImg);
         recyclerViewCategory = findViewById(R.id.genreView);
         recyclerViewActors = findViewById(R.id.imagesRecycler);
         recyclerViewActors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+//                Intent backIntent = new Intent(DetailActivity.this, MainActivity.class);
+//                startActivity(backIntent);
             }
         });
+        trailerContainer = findViewById(R.id.trailerContainer);
     }
+    //https://fireship.io/lessons/firestore-nosql-data-modeling-by-example/
 }

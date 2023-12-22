@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.bookticketmovie.R;
+import com.example.appbookticketmovie.R;
 
 public class LoginActivity extends AppCompatActivity {
 

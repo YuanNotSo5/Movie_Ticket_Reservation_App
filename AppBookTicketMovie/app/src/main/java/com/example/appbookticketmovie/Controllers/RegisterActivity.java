@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.bookticketmovie.R;
+import com.example.appbookticketmovie.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -34,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = etPassword.getText().toString();
                 String confirmPass = etConfirmPassword.getText().toString();
 
-                if(username)
+                //if(username)
             }
         });
 
