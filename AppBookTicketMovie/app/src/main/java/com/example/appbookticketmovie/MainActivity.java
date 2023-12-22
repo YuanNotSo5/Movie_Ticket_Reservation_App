@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.appbookticketmovie.Controllers.RegisterActivity;
 import com.example.appbookticketmovie.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

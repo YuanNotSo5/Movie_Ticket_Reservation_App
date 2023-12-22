@@ -9,32 +9,37 @@
     tools:context=".ui.user.UserFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@drawable/user_info_background"
+        android:layout_height="350dp"
+        android:layout_marginTop="-50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Username"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="#00FFFFFF"
+            app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <VideoView
+                android:id="@+id/videoView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             app:cardCornerRadius="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -44,6 +49,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:src="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#00FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Username"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -57,13 +80,17 @@
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
         <LinearLayout
             android:id="@+id/linearLayout5"
             android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,36 +100,39 @@
                 <ImageView
                     android:id="@+id/imageView6"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/confirmation_number_24px" />
 
                 <TextView
                     android:id="@+id/textView15"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:gravity="center"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="TextView"
+                    android:gravity="center_horizontal"
+                    android:text="Vé Đã Mua"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout6"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="25dp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:orientation="horizontal"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout5">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout5"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,26 +143,26 @@
                 <ImageView
                     android:id="@+id/imageView13"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:src="@drawable/baseline_remove_red_eye_24" />
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_favorite_24_pink" />
 
                 <TextView
                     android:id="@+id/textView13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:gravity="center"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="TextView"
+                    android:gravity="center_horizontal"
+                    android:text="Yêu Thích"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -140,10 +170,12 @@
         <LinearLayout
             android:id="@+id/linearLayout7"
             android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout8">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout8"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -154,25 +186,26 @@
                 <ImageView
                     android:id="@+id/imageView14"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/baseline_star_24" />
 
                 <TextView
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:gravity="center"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:gravity="center_horizontal"
+                    android:text="Đánh Giá"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -180,9 +213,13 @@
         <LinearLayout
             android:id="@+id/linearLayout8"
             android:layout_width="70dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -192,25 +229,26 @@
                 <ImageView
                     android:id="@+id/imageView17"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/baseline_cruelty_free_24" />
 
                 <TextView
                     android:id="@+id/textView16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:gravity="center"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:gravity="center_horizontal"
+                    android:text="Điểm"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 
