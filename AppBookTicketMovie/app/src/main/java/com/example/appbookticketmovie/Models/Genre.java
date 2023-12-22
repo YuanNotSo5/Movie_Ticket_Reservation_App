@@ -1,8 +1,5 @@
 
-package com.example.appbookticketmovie.Domain;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.example.appbookticketmovie.Models;
 
 import java.util.List;
 
@@ -15,5 +12,12 @@ public class Genre {
 
     public void setGenres(List<GenreItem> genres) {
         this.genres = genres;
+    }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "genres=" + genres +
+                '}';
     }
 }

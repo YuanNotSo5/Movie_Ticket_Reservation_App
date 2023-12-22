@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.appbookticketmovie.Models.User;
 import com.example.appbookticketmovie.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -67,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String fullname = etFullname.getText().toString();
                 String password = etPassword.getText().toString();
                 String confirmPass = etConfirmPassword.getText().toString();
+
 
                 if(username.equals("")){
                     etUsername.setError("Please Enter Username");
