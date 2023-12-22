@@ -1,0 +1,31 @@
+//SHARE APP - DEEP LINK 
+https://www.youtube.com/watch?v=iFN_1BYpZMs
+- SHARE FILE BOOK APP
+https://www.youtube.com/watch?v=uhmjt10IwgA
+https://developer.android.com/guide/navigation/design/deep-link#java
+https://developer.android.com/guide/navigation/design/deep-link
+https://www.answertopia.com/android-studio/an-android-studio-app-links-tutorial/
+https://stackoverflow.com/questions/4969217/share-application-link-in-android
+https://developers.sap.com/tutorials/sdk-android-app-link.html
+
+
+
+//UI TICKET
+https://www.youtube.com/watch?v=71AsYo2q_0Y
+
+//CREATE QRCODE OR BARCODE
+https://www.youtube.com/watch?v=vztajeXXbkw
+https://www.youtube.com/watch?v=0fQNBGKzCCE
+
+//BOTTOM SHEET DIALOG
+https://www.youtube.com/watch?v=pl_ta6SVhm4
+https://github.com/android-knowledge/BottomNavWithBottomDialogSheet
+
+
+//COMMENT UI
+https://www.restobiz.ca/doordash-introduces-in-app-reviews-recommendations/
+https://stackoverflow.com/questions/10816757/rate-this-app-link-in-google-play-store-app-on-the-phone
+
+
+//PROJECT
+https://diyaact.com/android-studio-source-code-download/

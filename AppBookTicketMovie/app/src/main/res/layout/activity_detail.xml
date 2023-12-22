@@ -240,23 +240,25 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="Đánh giá và Phản hồi"
                 android:textColor="@color/yellow_color"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="@+id/imagesRecycler"
                 app:layout_constraintTop_toBottomOf="@+id/imagesRecycler" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/commentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8">
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-                
-            </LinearLayout>
+
 
             <View
                 android:id="@+id/view2"

@@ -5,6 +5,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +15,11 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,6 +50,9 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView recyclerViewActors, recyclerViewCategory;
     private NestedScrollView scrollView;
     private WebView trailerContainer;
+
+    private Button bookTicketBtn, shareBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,25 @@ public class DetailActivity extends AppCompatActivity {
         idFilm = getIntent().getIntExtra("id",0);
         initView();
         sendRequest();
+
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DetailActivity.this, "Haha", Toast.LENGTH_SHORT).show();
+                shareApp(DetailActivity.this);
+            }
+        });
+
+    }
+
+    public static void shareApp(Context context)
+    {
+        final String appPackageName = context.getPackageName();
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out the App at: https://play.google.com/store/apps/details?id=" + appPackageName);
+        sendIntent.setType("text/plain");
+        context.startActivity(sendIntent);
     }
 
     private void sendRequest(){
@@ -174,6 +199,11 @@ public class DetailActivity extends AppCompatActivity {
         recyclerViewActors = findViewById(R.id.imagesRecycler);
         recyclerViewActors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        //Btn
+        bookTicketBtn = findViewById(R.id.bookTicketBtn);
+        shareBtn = findViewById(R.id.sharingBtn);
+
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
