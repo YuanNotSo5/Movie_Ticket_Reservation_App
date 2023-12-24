@@ -87,6 +87,7 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         idFilm = getIntent().getIntExtra("id",0);
+        idUser = getIntent().getLongExtra("idUser",2L);
         initView();
         sendRequest();
 
@@ -177,7 +178,7 @@ public class DetailActivity extends AppCompatActivity {
                     pd.show();
                     ipLCmt.setHelperText("");
                     ipLCmt.setError("");
-                    user.postComment(userName, avatar, String.valueOf(inputCmt.getText()), 2L, idFilm, String.valueOf(rate.getRating()), new UserService.OnCmtDataReceivedListener() {
+                    user.postComment(userName, avatar, String.valueOf(inputCmt.getText()), idUser, idFilm, String.valueOf(rate.getRating()), new UserService.OnCmtDataReceivedListener() {
                         @Override
                         public void onCmtDataReceived(CommentItem newCmt) {
                             pd.dismiss();
