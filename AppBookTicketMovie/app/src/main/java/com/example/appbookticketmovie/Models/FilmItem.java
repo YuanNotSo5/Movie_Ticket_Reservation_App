@@ -41,7 +41,7 @@ public class FilmItem {
 
     @SerializedName("genres")
     @Expose
-    private List<GenreItem> genres;
+    private ArrayList<GenreItem> genres;
 
     @SerializedName("trailer")
     @Expose
@@ -132,11 +132,11 @@ public class FilmItem {
         this.imdbRating = imdbRating;
     }
 
-    public List<GenreItem> getGenres() {
+    public ArrayList<GenreItem> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<GenreItem> genres) {
+    public void setGenres(ArrayList<GenreItem> genres) {
         this.genres = genres;
     }
 

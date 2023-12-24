@@ -1,15 +1,22 @@
 package com.example.appbookticketmovie.HomeActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -18,6 +25,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,29 +37,48 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.appbookticketmovie.Adapter.ActorsListAdapter;
-import com.example.appbookticketmovie.Adapter.CategoryEachFilmListAdapter;
+import com.example.appbookticketmovie.Adapter.CategoryListAdapter;
+import com.example.appbookticketmovie.Adapter.CommentAdapter;
 import com.example.appbookticketmovie.MainActivity;
+import com.example.appbookticketmovie.Models.CommentItem;
 import com.example.appbookticketmovie.Models.FilmItem;
+import com.example.appbookticketmovie.Models.GenreItem;
+import com.example.appbookticketmovie.Models.User;
 import com.example.appbookticketmovie.R;
 import com.example.appbookticketmovie.Services.FilmService;
+import com.example.appbookticketmovie.Services.UserService;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 
+    //Cần ID user
+    private long idUser;
     private RequestQueue mRequestQueue;
     private StringRequest mStringRequest;
     private ProgressBar progressBar;
-    private TextView titleTxt, movieRateTxt, movieTimeTxt, movieSumInfo, movieActorInfo;
-    private int idFilm;
+    private TextView titleTxt, movieRateTxt, movieTimeTxt, movieSumInfo, showCmtTxt;
+    private long idFilm;
     private ImageView pic2, backImg;
-    private RecyclerView.Adapter adapterActorList, adapterCategory;
-    private RecyclerView recyclerViewActors, recyclerViewCategory;
+    private RecyclerView.Adapter adapterActorList, adapterCategory, adapterComment;
+    private RecyclerView recyclerViewActors, recyclerViewCategory, recyclerViewComment;
     private NestedScrollView scrollView;
     private WebView trailerContainer;
 
     private Button bookTicketBtn, shareBtn;
+
+    //Bottom Sheet Dilog
+    BottomSheetDialog dialog;
+    ProgressDialog pd;
+    ArrayList<CommentItem> listComment;
+    UserService userSevice;
+    String userName, avatar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +98,105 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        //Bottom Sheet Dialog: https://www.youtube.com/watch?v=hclp2377fDQ
+        dialog = new BottomSheetDialog(this);
+        showCmtTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createDialog();
+            }
+        });
+        userSevice = new UserService();
+        listComment = new ArrayList<>();
     }
 
+    private void createDialog() {
+        BottomSheetBehavior <View> bottomSheetBehavior;
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.dialog_bottom_sheet, null, false);
+        dialog.setContentView(bottomSheetView);
+
+        //Sheet behavior
+        bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetView.getParent());
+        //Set to behaviour to expanded and minium height to parent layout
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        //set min height to parent view
+        CoordinatorLayout layout = dialog.findViewById(R.id.bottomSheetLayout);
+        assert layout!=null;
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        dialog.show();
+
+        //Close the dialog
+        ImageView cancelBtn = dialog.findViewById(R.id.cancelButton);
+        assert cancelBtn !=null;
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(bottomSheetBehavior.STATE_HIDDEN);
+                Log.d("List Comment before close", String.valueOf(listComment));
+                adapterComment.notifyDataSetChanged();
+            }
+        });
+
+        RecyclerView recyclerViewComments = dialog.findViewById(R.id.commentContainer);
+        recyclerViewComments.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewComments.setAdapter(adapterComment);
+        //Pic User
+        ImageView userPhoto = dialog.findViewById(R.id.cmtPhoto);
+        userSevice.getUser(2L, new UserService.userInfoListener() {
+            @Override
+            public void onUserDataReceived(User userInfo) {
+                avatar = userInfo.getAvatar();
+                Glide.with(DetailActivity.this)
+                        .load(userInfo.getAvatar())
+                        .into(userPhoto);
+                userName = userInfo.getUsername();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+
+
+        //Send new comment
+        TextInputEditText inputCmt = dialog.findViewById(R.id.cmtInput);
+        TextInputLayout ipLCmt = dialog.findViewById(R.id.inputLayoutCmt);
+        ImageView sendBtn = dialog.findViewById(R.id.sendBtn);
+        RatingBar rate = dialog.findViewById(R.id.ratingBarUser);
+        pd = new ProgressDialog(this);
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(inputCmt.getText().toString().isEmpty()){
+                    ipLCmt.setHelperText("");
+                    ipLCmt.setError("How is your experiences");
+                }else{
+                    UserService user = new UserService();
+                    pd.setTitle("Add new comment");
+                    pd.show();
+                    ipLCmt.setHelperText("");
+                    ipLCmt.setError("");
+                    user.postComment(userName, avatar, String.valueOf(inputCmt.getText()), 2L, idFilm, String.valueOf(rate.getRating()), new UserService.OnCmtDataReceivedListener() {
+                        @Override
+                        public void onCmtDataReceived(CommentItem newCmt) {
+                            pd.dismiss();
+                            inputCmt.setText("");
+                            rate.setRating(0.0F);
+                            listComment.add(newCmt);
+                            adapterComment.notifyDataSetChanged();
+                        }
+                        @Override
+                        public void onError(String errorMessage) {
+                            pd.dismiss();
+                            Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+
+    }
     public static void shareApp(Context context)
     {
         final String appPackageName = context.getPackageName();
@@ -84,6 +208,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void sendRequest(){
+        //Film
         FilmService film = new FilmService();
         progressBar.setVisibility(View.VISIBLE);
         scrollView.setVisibility(View.GONE);
@@ -108,7 +233,6 @@ public class DetailActivity extends AppCompatActivity {
                                "src=\""+videoLink+"\" " +
                                "title=\"YouTube video player\" frameborder=\"0\" " +
                                "allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>";
-
                 trailerContainer.loadData(video, "text/html", "utf-8");
                 trailerContainer.getSettings().setJavaScriptEnabled(true);
                 trailerContainer.getSettings().setLoadWithOverviewMode(true);
@@ -129,11 +253,24 @@ public class DetailActivity extends AppCompatActivity {
                     recyclerViewActors.setAdapter(adapterActorList);
                 }
                 if(item.getGenres()!=null){
-                    adapterCategory=new CategoryEachFilmListAdapter(item.getGenres());
+                    adapterCategory=new CategoryListAdapter(item.getGenres());
                     recyclerViewCategory.setAdapter(adapterCategory);
                 }
-            }
+                //Load Cmt
+                userSevice.LoadAllCmtOfFilm(idFilm, new UserService.CmtListListener() {
+                    @Override
+                    public void onCmtDataReceived(ArrayList<CommentItem> listCommentsOfFilm) {
+                        listComment = listCommentsOfFilm;
+                        adapterComment = new CommentAdapter(listCommentsOfFilm);
+                        recyclerViewComment.setAdapter(adapterComment);
+                    }
+                    @Override
+                    public void onError(String errorMessage) {
 
+                    }
+                });
+
+            }
             @Override
             public void onError(String errorMessage) {
                 progressBar.setVisibility(View.GONE);
@@ -194,21 +331,24 @@ public class DetailActivity extends AppCompatActivity {
         movieRateTxt = findViewById(R.id.movieStar);
         movieTimeTxt = findViewById(R.id.movieTime);
         movieSumInfo = findViewById(R.id.movieSummaryContextTxt);
+        showCmtTxt = findViewById(R.id.showCommentListTxt);
+
         backImg = findViewById(R.id.backImg);
         recyclerViewCategory = findViewById(R.id.genreView);
         recyclerViewActors = findViewById(R.id.imagesRecycler);
+        recyclerViewComment = findViewById(R.id.commentContainer);
         recyclerViewActors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewComment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         //Btn
         bookTicketBtn = findViewById(R.id.bookTicketBtn);
         shareBtn = findViewById(R.id.sharingBtn);
-
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent backIntent = new Intent(DetailActivity.this, MainActivity.class);
-//                startActivity(backIntent);
+                onBackPressed();
+
             }
         });
         trailerContainer = findViewById(R.id.trailerContainer);
