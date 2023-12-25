@@ -11,6 +11,7 @@
     <!--  Config color for app  -->
     <color name="main_color">#1f1f28</color>
     <color name="sup_color">#34348d</color>
+    <color name="focus_color">#650000</color>
     <color name="rating_color">#efa247</color>
     <color name="gray_color">#38394b</color>
     <color name="blue_color">#161b2f</color>

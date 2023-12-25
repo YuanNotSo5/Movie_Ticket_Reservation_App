@@ -21,34 +21,68 @@
             android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardBackgroundColor="#00FFFFFF"
+            android:background="@drawable/background_ver2"
             app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <VideoView
-                android:id="@+id/videoView2"
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_ver2" />
+
+            <ImageView
+                android:id="@+id/settingsBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/background_circle"
+                android:clickable="true"
+                android:padding="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_settings_24" />
 
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="-80dp"
+            android:layout_marginEnd="20dp"
+            app:cardBackgroundColor="#AB30303B"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cardView">
+
+            <ImageView
+                android:id="@+id/logoutBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                app:srcCompat="@drawable/baseline_logout_24" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="100dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:cardCornerRadius="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:src="@tools:sample/avatars" />
+            <WebView
+                android:id="@+id/avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -64,9 +98,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:shadowColor="#FFFFFF"
                 android:text="Username"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp" />
+                android:textSize="22sp"
+                android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -104,7 +140,7 @@
                     android:src="@drawable/confirmation_number_24px" />
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/tvTickets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -147,7 +183,7 @@
                     android:src="@drawable/baseline_favorite_24_pink" />
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/tvFavorite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -190,7 +226,7 @@
                     android:src="@drawable/baseline_star_24" />
 
                 <TextView
-                    android:id="@+id/textView14"
+                    android:id="@+id/tvFeedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -233,7 +269,7 @@
                     android:src="@drawable/baseline_cruelty_free_24" />
 
                 <TextView
-                    android:id="@+id/textView16"
+                    android:id="@+id/tvPoint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

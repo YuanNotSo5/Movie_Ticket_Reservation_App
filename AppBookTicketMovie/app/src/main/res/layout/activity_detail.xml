@@ -247,10 +247,23 @@
                 app:layout_constraintStart_toStartOf="@+id/imagesRecycler"
                 app:layout_constraintTop_toBottomOf="@+id/imagesRecycler" />
 
+            <TextView
+                android:id="@+id/showCommentListTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                android:text="Xem thêm"
+                android:textColor="@color/yellow_color"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="@+id/imagesRecycler"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/textView8"
+                app:layout_constraintTop_toTopOf="@+id/textView8" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/commentContainer"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"

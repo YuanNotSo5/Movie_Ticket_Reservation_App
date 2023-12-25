@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controllers.RegisterActivity">
+    tools:context=".HomeActivities.RegisterActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -101,7 +101,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
-        android:layout_height="480dp"
+        android:layout_height="550dp"
         app:layout_constraintBottom_toBottomOf="@+id/view7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -200,12 +200,33 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/register_et_password"
+            android:id="@+id/register_et_phone"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/register_et_fullname"
             app:layout_constraintTop_toBottomOf="@+id/register_et_fullname">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:drawableLeft="@drawable/baseline_phone_android_24"
+                android:drawablePadding="5dp"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:textColorHint="#640000"
+                android:textSize="18sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_et_password"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@+id/register_et_phone"
+            app:layout_constraintTop_toBottomOf="@+id/register_et_phone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_password"
@@ -243,7 +264,6 @@
 
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -251,6 +271,7 @@
             android:shadowColor="#403D3D"
             android:text="Password does not match"
             android:textColor="#FF0000"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/register_et_confirm_password"
             app:layout_constraintTop_toBottomOf="@+id/register_et_confirm_password" />
 

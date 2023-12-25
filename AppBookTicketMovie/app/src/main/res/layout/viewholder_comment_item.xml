@@ -2,22 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="360dp"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="7dp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="10dp"
+        android:layout_height="match_parent"
         app:cardCornerRadius="16dp"
-        app:cardElevation="4dp">
+        app:cardElevation="4dp"
+        android:minHeight="130dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_margin="10dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -26,7 +29,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/images"
+                    android:id="@+id/cmtPhoto"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_gravity="center"
@@ -51,14 +54,14 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="12dp">
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/nameCmtTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="24dp"
                         android:layout_marginTop="10dp"
                         android:text="Carolyn Augustine"
                         android:textColor="#000000"
@@ -71,13 +74,13 @@
                         android:id="@+id/linearLayout4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="12dp"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="@id/textView9"
-                        app:layout_constraintTop_toBottomOf="@+id/textView9">
+                        app:layout_constraintStart_toStartOf="@id/nameCmtTxt"
+                        app:layout_constraintTop_toBottomOf="@+id/nameCmtTxt">
 
                         <RatingBar
                             android:id="@+id/ratingBar"
@@ -91,7 +94,7 @@
                             android:stepSize="0.5" />
 
                         <TextView
-                            android:id="@+id/textView12"
+                            android:id="@+id/dateCmtTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
@@ -99,16 +102,14 @@
                     </LinearLayout>
 
                     <com.borjabravo.readmoretextview.ReadMoreTextView
-                        android:id="@+id/a"
+                        android:id="@+id/commentTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="Nội dung tóm tắt phim. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                        android:layout_marginTop="5dp"
+                        android:text="Nội dung cmtLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
+                        android:textSize="16dp"
                         app:colorClickableText="@color/yellow_color"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/linearLayout4"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/linearLayout4"
@@ -116,8 +117,9 @@
                         app:layout_constraintVertical_bias="0.0"
                         app:trimCollapsedText="@string/read_more"
                         app:trimExpandedText="@string/read_less"
-                        app:trimLength="80"
+                        app:trimLength="20"
                         app:trimMode="trimModeLength" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>

@@ -38,11 +38,12 @@
                 android:drawableStart="@drawable/search"
                 android:drawablePadding="12dp"
                 android:ems="10"
+                android:focusable="true"
                 android:hint="Search"
                 android:inputType="text"
                 android:padding="12dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"/>
+                android:textColorHint="@color/white" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -28,7 +28,7 @@ public class FilmService {
     }
 
     //Get all films
-    public void getFilmCloudStore(FilmService.OnFilmDataReceivedListener listener) {
+    public void getFilmCloudStore(OnFilmDataReceivedListener listener) {
         ArrayList<FilmItem> filmList = new ArrayList<>();
         db.collection("Films")
                 .whereEqualTo("isShow", true)
@@ -71,7 +71,6 @@ public class FilmService {
 
                                     }
                                 });
-//                                filmList.add(film);
 
                             }
                         } else {
@@ -85,7 +84,7 @@ public class FilmService {
     }
 
     //Get film by Id
-    public void getFilmById(long idFilm, FilmService.OnFilmDataReceivedListener listener) {
+    public void getFilmById(long idFilm, OnFilmDataReceivedListener listener) {
         ArrayList<FilmItem> filmList = new ArrayList<>();
         db.collection("Films")
                 .whereEqualTo("id", idFilm)
