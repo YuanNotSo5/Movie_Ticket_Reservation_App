@@ -90,7 +90,7 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
 //        price = 45000;
 
         CinemaService seat = new CinemaService();
-        seat.getMapRoom(idRoom, idCinema, new CinemaService.OnCinemaDataReceivedListener() {
+        seat.getMapRoom(idRoom, idCinema, new CinemaService.OnCinemaDataReceivedListener2() {
             @Override
             public void onCinemaDataReceived(Cinema cinema) {
                 seats = cinema.getMap();
@@ -108,7 +108,7 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
             public void onClick(View view) {
                 CinemaService updateMap = new CinemaService();
                 String newMap = new String(charMap);
-                updateMap.updateSeatMap(newMap, idCinema, idRoom, new CinemaService.OnCinemaDataReceivedListener() {
+                updateMap.updateSeatMap(newMap, idCinema, idRoom, new CinemaService.OnCinemaDataReceivedListener2() {
                     @Override
                     public void onCinemaDataReceived(Cinema cinema) {
                         Intent intent = new Intent(BookMapSeat.this, DetailActivity.class);

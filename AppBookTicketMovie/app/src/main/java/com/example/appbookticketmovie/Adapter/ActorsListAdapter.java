@@ -46,7 +46,6 @@ public class ActorsListAdapter extends RecyclerView.Adapter<ActorsListAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView txtNameActor;
         ImageView pic;
         public ViewHolder(@NonNull View itemView) {

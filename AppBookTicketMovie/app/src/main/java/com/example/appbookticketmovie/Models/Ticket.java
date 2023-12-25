@@ -8,17 +8,27 @@ public class Ticket {
 
     //Seat
     private String NumberSeat;
+    private String Room;
     private String TypeSeat;
     private long priceDetail;
 
-    public Ticket(String film, String time, String date, String cinema, String numberSeat, String typeSeat, long priceDetail) {
+    public Ticket(String film, String time, String date, String cinema, String numberSeat, String room, String typeSeat, long priceDetail) {
         Film = film;
         Time = time;
         Date = date;
         Cinema = cinema;
         NumberSeat = numberSeat;
+        Room = room;
         TypeSeat = typeSeat;
         this.priceDetail = priceDetail;
+    }
+
+    public String getRoom() {
+        return Room;
+    }
+
+    public void setRoom(String room) {
+        Room = room;
     }
 
     public String getFilm() {
@@ -85,6 +95,7 @@ public class Ticket {
                 ", Date='" + Date + '\'' +
                 ", Cinema='" + Cinema + '\'' +
                 ", NumberSeat='" + NumberSeat + '\'' +
+                ", Room='" + Room + '\'' +
                 ", TypeSeat='" + TypeSeat + '\'' +
                 ", priceDetail=" + priceDetail +
                 '}';

@@ -22,6 +22,11 @@ import java.util.ArrayList;
 public class CinemaService {
     FirebaseFirestore db;
     public interface OnCinemaDataReceivedListener {
+        void onCinemaDataReceived();
+        void onError(String errorMessage);
+    }
+
+    public interface OnCinemaDataReceivedListener2 {
         void onCinemaDataReceived(Cinema cinema);
         void onError(String errorMessage);
     }
@@ -30,7 +35,7 @@ public class CinemaService {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void getMapRoom(String idRoom, int idCinema, OnCinemaDataReceivedListener listener){
+    public void getMapRoom(String idRoom, int idCinema, OnCinemaDataReceivedListener2 listener){
         DocumentReference roomDocRef = db.collection("Cinema")
                 .document(String.valueOf(idCinema))
                 .collection("room")
@@ -62,7 +67,7 @@ public class CinemaService {
         });
     }
 
-    public void updateSeatMap(String newMap, int idCinema, String idRoom, OnCinemaDataReceivedListener listener){
+    public void updateSeatMap(String newMap, int idCinema, String idRoom, OnCinemaDataReceivedListener2 listener){
         DocumentReference messageRef = db
                 .collection("Cinema").document(String.valueOf(idCinema))
                 .collection("room").document(idRoom);
