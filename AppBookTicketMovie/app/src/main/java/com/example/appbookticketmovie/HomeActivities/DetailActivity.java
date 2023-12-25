@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -54,6 +55,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -89,13 +91,20 @@ public class DetailActivity extends AppCompatActivity {
         idFilm = getIntent().getIntExtra("id",0);
         idUser = getIntent().getLongExtra("idUser",2L);
         initView();
+
+        Uri uri = getIntent().getData();
+        if(uri!=null){
+            List<String> params = uri.getPathSegments();
+            String id = params.get(params.size()-1);
+            Toast.makeText(DetailActivity.this, "id="+id, Toast.LENGTH_SHORT).show();
+            idFilm = Long.parseLong(id);
+        }
         sendRequest();
 
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Haha", Toast.LENGTH_SHORT).show();
-                shareApp(DetailActivity.this);
+                shareApp(DetailActivity.this, idFilm);
             }
         });
 
@@ -109,6 +118,9 @@ public class DetailActivity extends AppCompatActivity {
         });
         userSevice = new UserService();
         listComment = new ArrayList<>();
+
+
+
     }
 
     private void createDialog() {
@@ -143,7 +155,7 @@ public class DetailActivity extends AppCompatActivity {
         recyclerViewComments.setAdapter(adapterComment);
         //Pic User
         ImageView userPhoto = dialog.findViewById(R.id.cmtPhoto);
-        userSevice.getUser(2L, new UserService.userInfoListener() {
+        userSevice.getUser(idUser, new UserService.userInfoListener() {
             @Override
             public void onUserDataReceived(User userInfo) {
                 avatar = userInfo.getAvatar();
@@ -198,14 +210,17 @@ public class DetailActivity extends AppCompatActivity {
         });
 
     }
-    public static void shareApp(Context context)
+    public void shareApp(Context context, long idFilm)
     {
         final String appPackageName = context.getPackageName();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out the App at: https://play.google.com/store/apps/details?id=" + appPackageName);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Wanna Watch Some Nice Things?: http://www.cnnmovieticket.com/details/" + String.valueOf(idFilm));
         sendIntent.setType("text/plain");
-        context.startActivity(sendIntent);
+
+        if(sendIntent.resolveActivity(getPackageManager())!=null){
+            context.startActivity(sendIntent);
+        }
     }
 
     private void sendRequest(){
