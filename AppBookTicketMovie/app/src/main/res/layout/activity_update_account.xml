@@ -64,7 +64,7 @@
                 android:background="@drawable/background_circle"
                 android:clickable="true"
                 android:padding="8dp"
-                app:srcCompat="@drawable/baseline_settings_24" />
+                app:srcCompat="@drawable/baseline_edit_24" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView

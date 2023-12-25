@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.appbookticketmovie.Models.CommentItem;
 import com.example.appbookticketmovie.Models.Schedule;
+import com.example.appbookticketmovie.Models.Ticket;
 import com.example.appbookticketmovie.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -63,6 +64,11 @@ public class UserService {
         void onFailure(Exception e);
     }
 
+    public interface cardUpdate{
+        void updateCard(boolean status);
+        void onFailure(Exception e);
+    }
+
     public interface OnCmtDataReceivedListener {
         void onCmtDataReceived(CommentItem newCmt);
         void onError(String errorMessage);
@@ -75,6 +81,12 @@ public class UserService {
 
     public interface userInfoListener {
         void onUserDataReceived(User userInfo);
+        void onError(String errorMessage);
+    }
+
+    public interface AddTicketInfoListener {
+        void onSuccess();
+
         void onError(String errorMessage);
     }
 
@@ -152,6 +164,24 @@ public class UserService {
                 });
     }
 
+    public void updateCard(Map<String, String> newCard, UserService.cardUpdate callback){
+        FirebaseUser currUser = firebaseAuth.getCurrentUser();
+        String email = currUser.getEmail();
+
+        userDB.document(email).update("card", newCard)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        callback.updateCard(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFailure(e);
+                    }
+                });
+    }
     public void updatePoint(Integer newPoint, UserService.pointUpdate callback){
         FirebaseUser currUser = firebaseAuth.getCurrentUser();
         String email = currUser.getEmail();
@@ -287,5 +317,39 @@ public class UserService {
                     }
                 });
     }
+
+    public void buyTicket(ArrayList<Ticket> tickets, long idUser) {
+        // Buy Ticket
+
+        for (Ticket item : tickets) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("idFilm", item.getIdFilm());
+            data.put("idUser", idUser);
+            data.put("seat", item.getNumberSeat());
+            data.put("barcode", item.getBarcode());
+            data.put("date", item.getDate());
+            data.put("idCinema", item.getCinema());
+            data.put("price", item.getPriceDetail());
+            data.put("room", item.getRoom());
+            data.put("time", item.getTime());
+
+            db.collection("User_Ticket")
+                    .add(data)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d("TEST", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("TEST", "Error adding document", e);
+                        }
+                    });
+        }
+    }
+
+
 
 }

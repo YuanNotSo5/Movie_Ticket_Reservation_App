@@ -58,7 +58,6 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.ViewHo
             intent.putExtra("id", items.getData().get(position).getId());
             context.startActivity(intent);
         });
-
     }
 
     @Override

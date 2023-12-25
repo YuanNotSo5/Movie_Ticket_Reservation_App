@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,17 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
         holder.seatTxt.setText(listTicket.get(position).getNumberSeat());
         holder.typeSeatTxt.setText(listTicket.get(position).getTypeSeat());
 
+        holder.dateMainTxt.setText(listTicket.get(position).getDate());
+        holder.timeMainTxt.setText(listTicket.get(position).getTime());
+        holder.nameFilmMainTxt.setText(listTicket.get(position).getFilm());
+        holder.addressMainTxt.setText(listTicket.get(position).getCinema());
+        holder.roomMainTxt.setText(listTicket.get(position).getRoom());
+        holder.seatMainTxt.setText(listTicket.get(position).getNumberSeat());
+        holder.typeSeatMainTxt.setText(listTicket.get(position).getTypeSeat());
+
+        String barcode = listTicket.get(position).getBarcode();
+        holder.mainBarcode.setImageBitmap(listTicket.get(position).stringToBitmap(barcode));
+        holder.barcode.setImageBitmap(listTicket.get(position).stringToBitmap(barcode));
     }
 
     @Override
@@ -49,6 +61,8 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView dateTxt, timeTxt, nameFilmTxt, addressTxt, roomTxt, seatTxt, typeSeatTxt, dateMainTxt, timeMainTxt, nameFilmMainTxt, addressMainTxt, roomMainTxt, seatMainTxt, typeSeatMainTxt;
+        ImageView barcode, mainBarcode;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dateTxt = itemView.findViewById(R.id.dateTxt);
@@ -58,6 +72,15 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
             roomTxt = itemView.findViewById(R.id.roomTxt);
             seatTxt = itemView.findViewById(R.id.seatTxt);
             typeSeatTxt = itemView.findViewById(R.id.typeSeatTxt);
+            barcode = itemView.findViewById(R.id.barcode);
+            mainBarcode = itemView.findViewById(R.id.BarCode_Image);
+            dateMainTxt = itemView.findViewById(R.id.ticketDate);
+            timeMainTxt = itemView.findViewById(R.id.ticketTime);
+            nameFilmMainTxt = itemView.findViewById(R.id.ticketFilmName);
+            addressMainTxt = itemView.findViewById(R.id.ticketAddress);
+            roomMainTxt = itemView.findViewById(R.id.ticketRoom);
+            seatMainTxt = itemView.findViewById(R.id.ticketSeatRow);
+            typeSeatMainTxt = itemView.findViewById(R.id.ticketSeatType);
         }
     }
 }

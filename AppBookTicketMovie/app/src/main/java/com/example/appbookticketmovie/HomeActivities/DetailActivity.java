@@ -1,5 +1,6 @@
 package com.example.appbookticketmovie.HomeActivities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -14,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -58,6 +60,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -90,15 +93,25 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         getSupportActionBar().hide();
 
-        idFilm = getIntent().getIntExtra("id",0);
+        int tmp = getIntent().getIntExtra("id",0);
+        idFilm = Long.valueOf(String.valueOf(tmp));
+        Log.d("idFilm", String.valueOf(idFilm));
         initView();
+
+        Uri uri = getIntent().getData();
+        if(uri!=null){
+            List<String> params = uri.getPathSegments();
+            String id = params.get(params.size()-1);
+            Toast.makeText(DetailActivity.this, "id="+id, Toast.LENGTH_SHORT).show();
+//            idFilm = Long.parseLong(id);
+        }
+
         sendRequest();
 
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Haha", Toast.LENGTH_SHORT).show();
-                shareApp(DetailActivity.this);
+                shareApp(DetailActivity.this, idFilm);
             }
         });
 
@@ -110,6 +123,8 @@ public class DetailActivity extends AppCompatActivity {
                 createDialog();
             }
         });
+
+        userService = new UserService();
         listComment = new ArrayList<>();
 
         bookTicketBtn.setOnClickListener(new View.OnClickListener() {
@@ -264,14 +279,16 @@ public class DetailActivity extends AppCompatActivity {
         });
 
     }
-    public static void shareApp(Context context)
+    public void shareApp(Context context, Long id)
     {
         final String appPackageName = context.getPackageName();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out the App at: https://play.google.com/store/apps/details?id=" + appPackageName);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Wanna Watch Some Nice Things?: http://www.cnnmovieticket.com/details/" + String.valueOf(id));
         sendIntent.setType("text/plain");
-        context.startActivity(sendIntent);
+        if(sendIntent.resolveActivity(getPackageManager())!=null){
+            context.startActivity(sendIntent);
+        }
     }
 
     private void sendRequest(){

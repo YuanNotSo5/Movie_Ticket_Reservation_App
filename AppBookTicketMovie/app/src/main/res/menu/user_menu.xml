@@ -3,9 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/editItem"
-        android:icon="@drawable/baseline_edit_24_black"
-        android:title="Chỉnh Sửa Thông Tin"
+        android:id="@+id/finish"
+        android:title="Hoàn Tất"
         app:showAsAction="always" />
-    <item android:title="Item" />
 </menu>

@@ -27,20 +27,192 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/ticketCinemaName"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    app:cardCornerRadius="20dp"
+                    android:layout_marginTop="12dp"
+                    android:text="RẠP CNN"
+                    android:textSize="40dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Tên Phim"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ticketCinemaName" />
+
+                <TextView
+                    android:id="@+id/ticketSeatType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView17"
+                    app:layout_constraintStart_toStartOf="@+id/ticketSeatRow"
+                    app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+                <TextView
+                    android:id="@+id/ticketSeatRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                    app:layout_constraintStart_toStartOf="@+id/ticketDate"
+                    app:layout_constraintTop_toTopOf="@+id/textView16" />
+
+                <TextView
+                    android:id="@+id/textView27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Địa chỉ"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textView18"
+                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+                <TextView
+                    android:id="@+id/ticketAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView27"
+                    app:layout_constraintStart_toStartOf="@+id/ticketRoom"
+                    app:layout_constraintTop_toTopOf="@+id/textView27" />
+
+                <TextView
+                    android:id="@+id/ticketDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView14"
+                    app:layout_constraintEnd_toEndOf="@+id/ticketTime"
+                    app:layout_constraintStart_toStartOf="@+id/ticketTime"
+                    app:layout_constraintTop_toTopOf="@+id/textView14" />
+
+                <TextView
+                    android:id="@+id/ticketTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                    app:layout_constraintEnd_toEndOf="@+id/ticketFilmName"
+                    app:layout_constraintStart_toStartOf="@+id/ticketFilmName"
+                    app:layout_constraintTop_toTopOf="@+id/textView15" />
+
+                <TextView
+                    android:id="@+id/ticketFilmName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView13"
+                    app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Ngày "
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textView15"
+                    app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Thời gian"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textView13"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+                <TextView
+                    android:id="@+id/ticketRoom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView18"
+                    app:layout_constraintStart_toStartOf="@+id/ticketSeatType"
+                    app:layout_constraintTop_toTopOf="@+id/textView18" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Hàng Ghế"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textView14"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Loại Ghế"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textView16"
+                    app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Phòng"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textView17"
+                    app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Chúc quý khách xem phim vui vẻ!"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="230dp"
+                    android:layout_height="70dp"
+                    android:layout_margin="20dp"
+                    android:rotation="0"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView27">
 
                     <ImageView
                         android:id="@+id/BarCode_Image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="170px"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="12dp"
+                        android:rotation="0"
                         tools:srcCompat="@tools:sample/avatars" />
+
                 </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -114,18 +286,29 @@
                 app:layout_constraintStart_toStartOf="@+id/addressTxt"
                 app:layout_constraintTop_toBottomOf="@+id/addressTxt" />
 
+
+
+
+
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/barcode"
+                android:rotation="-90"
+                tools:srcCompat="@tools:sample/avatars"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="32dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
-                android:layout_marginBottom="10dp"
-                android:rotation="270"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:layout_marginBottom="10dp"/>
+
+
+
+
+
+
+
 
             <TextView
                 android:id="@+id/seatTxt"
@@ -138,7 +321,7 @@
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintEnd_toStartOf="@+id/barcode"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -151,7 +334,7 @@
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintEnd_toStartOf="@+id/barcode"
                 app:layout_constraintTop_toBottomOf="@+id/seatTxt" />
 
             <TextView
@@ -164,7 +347,7 @@
                 android:textColor="@color/black"
                 android:textSize="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/seatTxt"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintEnd_toStartOf="@+id/barcode"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

@@ -27,14 +27,12 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
     private ScheduleService scheduleService;
     private ArrayList<Schedule> data;
     private Context context;
-    private Long idFilm;
-
+    private long idFilm;
     private FilmItem filmItem;
     private String date = null;
     private Intent seat;
     private ArrayList<Cinema> cinemas;
     private String nameFilm;
-
     private Double extra_price;
     private FilmService filmService;
 
@@ -93,12 +91,17 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
             @Override
             public void onClick(View v) {
                 String cinemaName = cinemas.get(position).getName();
+                String cinemaAddress = cinemas.get(position).getAddress();
                 Integer idCinema = Integer.valueOf(data.get(position).getIdCinema().toString());
+
                 seat.putExtra("time", holder.timeStart.getText().toString() + " - " + holder.timeEnd.getText().toString());
                 seat.putExtra("date", date);
                 seat.putExtra("nameFilm", nameFilm);
                 seat.putExtra("idRoom", data.get(position).getRoom());
                 seat.putExtra("idCinema", idCinema);
+                seat.putExtra("addressCinema", cinemaAddress);
+                seat.putExtra("idFilm", idFilm);
+
 
                 System.out.println("cinemas: " + cinemaName);
 

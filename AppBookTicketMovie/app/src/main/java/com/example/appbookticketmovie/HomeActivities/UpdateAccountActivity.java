@@ -35,9 +35,6 @@ public class UpdateAccountActivity extends AppCompatActivity {
 
         userService = new UserService();
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("");
-
         tvUsername = findViewById(R.id.tvUsername);
         etUsername = findViewById(R.id.et_username_info);
         etEmail = findViewById(R.id.et_email_info);

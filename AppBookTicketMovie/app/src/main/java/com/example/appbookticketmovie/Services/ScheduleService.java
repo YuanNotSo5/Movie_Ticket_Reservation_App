@@ -39,7 +39,6 @@ public class ScheduleService {
         void onFailure(String errMess);
     }
     public void getCinemaSchedules (Long idCinema, Long idFilm, String date, ScheduleService.getSchedules callback){
-        ArrayList<Schedule> schedules = new ArrayList<>();
         scheduleDB
                 .whereEqualTo("date", date)
                 .whereEqualTo("idFilm", idFilm)
@@ -48,6 +47,7 @@ public class ScheduleService {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            ArrayList<Schedule> schedules = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Long idCinema = document.getLong("idCinema");
                                 Long idFilm = document.getLong("idFilm");
@@ -57,9 +57,14 @@ public class ScheduleService {
 
                                 Schedule schedule = new Schedule(idCinema, idFilm, timestamp, price, room);
                                 schedules.add(schedule);
+                                System.out.println("inner schedules: "+schedules);
+                                if(schedules.size() == task.getResult().size()){
+                                    callback.getCinemaSchedules(schedules);
+                                }
                             }
                             System.out.println("schedules: "+schedules);
-                            callback.getCinemaSchedules(schedules);
+                            System.out.println("size: "+task.getResult().size());
+
                         } else {
                             callback.onFailure(task.getException());
                         }

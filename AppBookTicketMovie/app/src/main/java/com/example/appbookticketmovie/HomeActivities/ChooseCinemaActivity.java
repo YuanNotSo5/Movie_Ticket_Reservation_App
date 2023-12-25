@@ -1,5 +1,6 @@
 package com.example.appbookticketmovie.HomeActivities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,16 +34,17 @@ public class ChooseCinemaActivity extends AppCompatActivity {
     private ArrayList<Cinema> cinemaList = new ArrayList<>();
     private ArrayList<Date> dayList = new ArrayList<>();
     private CinemaService cinemaService;
-    private Long idFilm;
+    private long idFilm;
     private Double extra_price = 0.0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_cinema);
 
-        idFilm = getIntent().getLongExtra("id",0);
+        idFilm = getIntent().getLongExtra("idFilm",0);
 
         Intent seat = new Intent(this, BookMapSeat.class);
+        System.out.println("idFilm:" + idFilm);
         seat.putExtra("idFilm", idFilm);
 
         cinemaService = new CinemaService();

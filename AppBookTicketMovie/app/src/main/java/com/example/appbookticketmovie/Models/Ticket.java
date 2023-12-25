@@ -1,12 +1,19 @@
 package com.example.appbookticketmovie.Models;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
+import java.io.ByteArrayOutputStream;
+
 public class Ticket {
+
+    private long idFilm;
+    private long idUser;
     private String Film;
     private String Time;
     private String Date;
     private String Cinema;
-
-    private boolean status;
 
     //Seat
     private String NumberSeat;
@@ -14,30 +21,70 @@ public class Ticket {
     private String TypeSeat;
     private long priceDetail;
 
-    public Ticket() {
+    private String barcode;
+
+    private boolean paymentStatus = false;
+    private String paymentMethod = "CASH";
+
+    public Ticket(long idFilm, String film, String time, String date, String cinema, String numberSeat, String room, String typeSeat, long priceDetail, String barcode) {
+        this.idFilm = idFilm;
+        this.Film = film;
+        this.Time = time;
+        this.Date = date;
+        this.Cinema = cinema;
+        this.NumberSeat = numberSeat;
+        this.Room = room;
+        this.TypeSeat = typeSeat;
+        this.priceDetail = priceDetail;
+        this.barcode = barcode;
+        this.paymentStatus = false;
+        this.paymentMethod = "CASH";
     }
 
-    public Ticket(String film, String time, String date, String cinema, boolean status, String numberSeat, String room, String typeSeat, long priceDetail) {
+    public Ticket(long idFilm, long idUser, String film, String time, String date, String cinema, String numberSeat, String room, String typeSeat, long priceDetail, String barcode) {
+        this.idFilm = idFilm;
+        this.idUser = idUser;
+        this.Film = film;
+        this.Time = time;
+        this.Date = date;
+        this.Cinema = cinema;
+        this.NumberSeat = numberSeat;
+        this.Room = room;
+        this.TypeSeat = typeSeat;
+        this.priceDetail = priceDetail;
+        this.barcode = barcode;
+        this.paymentStatus = false;
+        this.paymentMethod = "CASH";
+    }
+    public Ticket(String film, String time, String date, String cinema, String numberSeat, String room, String typeSeat, long priceDetail, String barcode) {
         Film = film;
         Time = time;
         Date = date;
         Cinema = cinema;
-        this.status = status;
         NumberSeat = numberSeat;
         Room = room;
         TypeSeat = typeSeat;
         this.priceDetail = priceDetail;
+        this.barcode = barcode;
     }
 
-    public Ticket(String film, String time, String date, String cinema, String numberSeat, String room, String typeSeat, long priceDetail) {
-        Film = film;
-        Time = time;
-        Date = date;
-        Cinema = cinema;
-        NumberSeat = numberSeat;
-        Room = room;
-        TypeSeat = typeSeat;
-        this.priceDetail = priceDetail;
+
+
+    public long getIdFilm() {
+        return idFilm;
+    }
+
+    public void setIdFilm(long idFilm) {
+        this.idFilm = idFilm;
+    }
+
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 
     public String getRoom() {
@@ -104,6 +151,22 @@ public class Ticket {
         this.priceDetail = priceDetail;
     }
 
+    public boolean isPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(boolean paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
     @Override
     public String toString() {
         return "Ticket{" +
@@ -117,4 +180,18 @@ public class Ticket {
                 ", priceDetail=" + priceDetail +
                 '}';
     }
+
+    // Convert Bitmap to String
+    public String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public Bitmap stringToBitmap(String encodedString) {
+        byte[] decodedBytes = Base64.decode(encodedString, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+
 }

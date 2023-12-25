@@ -3,6 +3,7 @@ package com.example.appbookticketmovie.HomeActivities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import java.util.List;
 public class BookMapSeat extends AppCompatActivity  implements View.OnClickListener{
 
     ViewGroup layout;
+    TextView movieTicketInfo;
     char[] charMap;
 
 
@@ -60,7 +62,7 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
     long VIP_PRICE = 30000;
     long NORMAL_PRICE = 10000;
     String selectedIds = "";
-    String idRoom, nameFilm, time, date, nameCinema;
+    String idRoom, nameFilm, time, date, nameCinema, addressCinema;
     int idCinema;
     long price, total = 0;
 
@@ -73,9 +75,12 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_map_seat);
+
+
         //Element
         btnConfirm = findViewById(R.id.btnBookTicket);
         totalAmount = findViewById(R.id.totalAmount);
+        movieTicketInfo = findViewById(R.id.movieTicketInfo);
 
         //Get Map: Cần nhận
         idRoom = getIntent().getStringExtra("idRoom");
@@ -85,8 +90,11 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
         date = getIntent().getStringExtra("date");
         time = getIntent().getStringExtra("time");
         nameCinema = getIntent().getStringExtra("nameCinema");
+        addressCinema = getIntent().getStringExtra("addressCinema");
 //        idRoom = "A";
 //        price = 45000;
+
+        movieTicketInfo.setText(nameFilm);
 
         CinemaService seat = new CinemaService();
         seat.getMapRoom(idRoom, idCinema, new CinemaService.OnCinemaDataReceivedListener2() {
@@ -110,14 +118,15 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
                 updateMap.updateSeatMap(newMap, idCinema, idRoom, new CinemaService.OnCinemaDataReceivedListener2() {
                     @Override
                     public void onCinemaDataReceived(Room room) {
-                        Intent intent = new Intent(BookMapSeat.this, DetailActivity.class);
+                        Intent intent = new Intent(BookMapSeat.this, TicketBookActivity.class);
                         intent.putExtra("nameFilm", nameFilm);
                         intent.putExtra("nameCinema", nameCinema);
                         intent.putExtra("date", date);
                         intent.putExtra("time", time);
-                        intent.putExtra("total", String.valueOf(totalAmount));
-                        intent.putExtra("nameFilm", nameFilm);
+                        intent.putExtra("total", Long.valueOf(totalAmount.getText().toString()));
                         intent.putExtra("idRoom", idRoom);
+                        intent.putExtra("addressCinema", addressCinema);
+
                         intent.putParcelableArrayListExtra("bookseat", (ArrayList<? extends Parcelable>) seatInfoList);
                         startActivity(intent);
                     }

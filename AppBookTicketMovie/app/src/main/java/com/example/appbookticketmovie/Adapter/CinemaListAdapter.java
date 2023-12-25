@@ -35,18 +35,22 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Vi
     private Context context;
     private Intent seat;
 
+    private Long idCinemaTmp;
+    private CinemaListAdapter.ViewHolder holderTmp;
+
     private Double extra_price;
     public class ViewHolder extends RecyclerView.ViewHolder{
         private ArrayList<Schedule> schedulesList = new ArrayList<>();
         TextView name, address;
         RecyclerView recyclerViewSchedule;
-        ScheduleListAdapter scheduleListAdapter = new ScheduleListAdapter(context, schedulesList, date, seat, data, idFilm, extra_price);
+        ScheduleListAdapter scheduleListAdapter;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.tvCinemaName);
             address = itemView.findViewById(R.id.tvCinemaAddress);
 
             recyclerViewSchedule = itemView.findViewById(R.id.recyclerViewSchedule);
+            scheduleListAdapter = new ScheduleListAdapter(context, schedulesList, date, seat, data, idFilm, extra_price);
             recyclerViewSchedule.setAdapter(scheduleListAdapter);
         }
     }
@@ -65,6 +69,7 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Vi
         this.idFilm = idFilm;
         this.seat = seat;
         this.extra_price = extra_price;
+        this.scheduleService = new ScheduleService();
     }
 
     @Override
@@ -73,7 +78,6 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Vi
         holder.address.setText(data.get(position).getAddress());
 
         Long idCinema = data.get(position).getId();
-        ArrayList<Schedule> schedulesList = new ArrayList<>();
 
         holder.recyclerViewSchedule.setLayoutManager(new GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false));
 
@@ -86,13 +90,15 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Vi
         return data.size();
     }
 
+    public void updateDate(String newDate){
+        this.date = newDate;
+    }
     public void getSchedule(Long idCinema, ArrayList<Schedule> schedulesList, ScheduleListAdapter scheduleListAdapter) {
-        scheduleService = new ScheduleService();
         if (this.date != null) {
-//            System.out.println("idCinema: "+idCinema);
-//            System.out.println("idFilm: "+idFilm);
-//            System.out.println("date: "+date);
-            scheduleService.getCinemaSchedules(idCinema, this.idFilm, this.date, new ScheduleService.getSchedules() {
+            System.out.println("idCinema: "+idCinema);
+            System.out.println("idFilm: "+idFilm);
+            System.out.println("date: "+date);
+            scheduleService.getCinemaSchedules(idCinema, idFilm, this.date, new ScheduleService.getSchedules() {
                 @Override
                 public void getCinemaSchedules(ArrayList<Schedule> schedules) {
                     schedulesList.clear();
@@ -109,9 +115,6 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Vi
                 }
             });
         }
-    }
-    public void updateDate(String newDate){
-        this.date = newDate;
     }
     public void updateIntent(Intent seat){
         this.seat = seat;
