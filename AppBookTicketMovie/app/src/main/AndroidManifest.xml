@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AppBookTicketMovie"
         tools:targetApi="31">
         <activity
-            android:name=".SpecificList"
+            android:name=".HomeActivities.SpecificList"
             android:exported="false" />
         <activity
             android:name=".HomeActivities.ETicket"

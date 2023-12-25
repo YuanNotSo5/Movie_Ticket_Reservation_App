@@ -1,11 +1,13 @@
 package com.example.appbookticketmovie.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.appbookticketmovie.Adapter.CategoryListAdapter;
 import com.example.appbookticketmovie.Adapter.FilmListAdapter;
 import com.example.appbookticketmovie.Adapter.SliderAdapters;
+import com.example.appbookticketmovie.HomeActivities.DetailActivity;
+import com.example.appbookticketmovie.HomeActivities.SpecificList;
 import com.example.appbookticketmovie.Models.FilmItem;
 import com.example.appbookticketmovie.Models.GenreItem;
 import com.example.appbookticketmovie.Models.ListFilm;
@@ -52,6 +56,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
+    private EditText search;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -80,6 +85,19 @@ public class HomeFragment extends Fragment {
         banners();
         sendRequest();
         sendRequestCategory();
+
+        //Search
+        search = binding.searchItemHome;
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), SpecificList.class);
+                startActivity(intent);
+                Toast.makeText(requireContext(), "aaaa", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return root;
     }
 

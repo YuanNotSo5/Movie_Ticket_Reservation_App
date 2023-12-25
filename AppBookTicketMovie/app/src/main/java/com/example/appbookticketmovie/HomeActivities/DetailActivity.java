@@ -24,6 +24,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -71,6 +72,7 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView recyclerViewActors, recyclerViewCategory, recyclerViewComment;
     private NestedScrollView scrollView;
     private WebView trailerContainer;
+    private EditText search;
 
     private Button bookTicketBtn, shareBtn;
 
