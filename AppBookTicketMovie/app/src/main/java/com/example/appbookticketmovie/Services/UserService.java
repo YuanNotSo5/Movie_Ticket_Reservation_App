@@ -318,9 +318,8 @@ public class UserService {
                 });
     }
 
+    // Buy Ticket
     public void buyTicket(ArrayList<Ticket> tickets, long idUser) {
-        // Buy Ticket
-
         for (Ticket item : tickets) {
             Map<String, Object> data = new HashMap<>();
             data.put("idFilm", item.getIdFilm());
@@ -348,6 +347,88 @@ public class UserService {
                         }
                     });
         }
+    }
+
+
+    public interface FavoriteReceivedListener {
+        void onSuccess(boolean isFavoriteListener, String idDocument);
+
+        void onError(String errorMessage);
+    }
+
+    // Get favorite
+    public void getFavorite(long idUser, long idFilm, FavoriteReceivedListener listener) {
+        db.collection("FavoriteFilm")
+                .whereEqualTo("idUser", idUser)
+                .whereEqualTo("idFilm", idFilm)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                boolean isFavorite = document.getBoolean("isFavorite");
+                                String idDocument = document.getId();
+                                listener.onSuccess(isFavorite, idDocument);
+                                return;
+                            }
+                            listener.onSuccess(false, "");
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                            listener.onError(String.valueOf(task.getException()));
+                        }
+                    }
+                });
+    }
+
+    //Add new favorite
+    public void addNewFavFilm(long idFilm, long idUser, FavoriteReceivedListener listener) {
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("idFilm", idFilm);
+        data.put("idUser", idUser);
+        data.put("isFavorite", true);
+
+        db.collection("FavoriteFilm")
+                .add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("TEST", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        listener.onSuccess(true, documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TEST", "Error adding document", e);
+                        listener.onError(String.valueOf(e));
+                    }
+                });
+
+    }
+
+    //Update favorite film
+    public void updateStateFavFilm (boolean isFavorite, String idDocument, FavoriteReceivedListener listener){
+        DocumentReference washingtonRef = db.collection("FavoriteFilm").document(idDocument);
+
+        // Set the "isCapital" field of the city 'DC'
+        washingtonRef
+                .update("isFavorite", isFavorite)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "DocumentSnapshot successfully updated!");
+                        listener.onSuccess(isFavorite, idDocument);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TAG", "Error updating document", e);
+                        listener.onError(String.valueOf(e));
+                    }
+                });
     }
 
 

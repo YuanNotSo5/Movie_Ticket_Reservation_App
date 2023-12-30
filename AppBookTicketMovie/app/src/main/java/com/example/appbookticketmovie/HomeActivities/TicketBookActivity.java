@@ -1,6 +1,7 @@
 package com.example.appbookticketmovie.HomeActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +18,11 @@ import android.widget.Toast;
 import com.example.appbookticketmovie.Adapter.CinemaListAdapter;
 import com.example.appbookticketmovie.Adapter.InvoiceInfoAdapter;
 import com.example.appbookticketmovie.HomeActivities.ChooseCinemaActivity;
+import com.example.appbookticketmovie.Models.Room;
 import com.example.appbookticketmovie.Models.User;
 import com.example.appbookticketmovie.Models.seatInfo;
 import com.example.appbookticketmovie.R;
+import com.example.appbookticketmovie.Services.CinemaService;
 import com.example.appbookticketmovie.Services.UserService;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -33,7 +36,8 @@ public class TicketBookActivity extends AppCompatActivity {
     private UserService userService;
     private int pay = -1;
     private User currUser;
-    private String nameFilm, nameCinema, date, time, idRoom, addressCinema;
+    private String nameFilm, nameCinema, date, time, idRoom, addressCinema, newMap;
+    private int idCinema;
     private long total, idFilm;
     RecyclerView recyclerView;
     LinearLayout paymentSection;
@@ -44,7 +48,7 @@ public class TicketBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket_book);
-
+        getSupportActionBar().hide();
         Intent book = getIntent();
         idFilm = book.getLongExtra("idFilm",0);
         nameFilm = book.getStringExtra("nameFilm");
@@ -55,6 +59,9 @@ public class TicketBookActivity extends AppCompatActivity {
         idRoom = book.getStringExtra("idRoom");
         total = book.getLongExtra("total",0);
         seatInfos = book.getParcelableArrayListExtra("bookseat");
+        idCinema = book.getIntExtra("idCinema",0);
+        newMap = book.getStringExtra("newMap");
+
 
         userService = new UserService();
 
@@ -73,7 +80,7 @@ public class TicketBookActivity extends AppCompatActivity {
         recyclerView.setAdapter(invoiceInfoAdapter);
 
         tvPrice.setText(String.valueOf(total) + "VND");
-        getCard();
+//        getCard();
         cardPaymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,19 +148,35 @@ public class TicketBookActivity extends AppCompatActivity {
         });
     }
     public void getETicketAct(){
-        Intent checkout = new Intent(TicketBookActivity.this, ETicket.class);
 
-        checkout.putExtra("idFilm", idFilm);
-        checkout.putExtra("paymentMethod", pay);
-        checkout.putExtra("nameFilm", nameFilm);
-        checkout.putExtra("nameCinema", nameCinema);
-        checkout.putExtra("addressCinema", addressCinema);
-        checkout.putExtra("date", date);
-        checkout.putExtra("time", time);
-        checkout.putExtra("idRoom", idRoom);
-        checkout.putExtra("total", total);
-        checkout.putParcelableArrayListExtra("bookseat", (ArrayList<? extends Parcelable>) seatInfos);
-        startActivity(checkout);
+        CinemaService updateMap = new CinemaService();
+        updateMap.updateSeatMap(newMap, idCinema, idRoom, new CinemaService.OnCinemaDataReceivedListener2() {
+            @Override
+            public void onCinemaDataReceived(Room room) {
+                Intent checkout = new Intent(TicketBookActivity.this, ETicket.class);
+
+                checkout.putExtra("idFilm", idFilm);
+                checkout.putExtra("paymentMethod", pay);
+                checkout.putExtra("nameFilm", nameFilm);
+                checkout.putExtra("nameCinema", nameCinema);
+                checkout.putExtra("addressCinema", addressCinema);
+                checkout.putExtra("date", date);
+                checkout.putExtra("time", time);
+                checkout.putExtra("idRoom", idRoom);
+                checkout.putExtra("total", total);
+                checkout.putParcelableArrayListExtra("bookseat", (ArrayList<? extends Parcelable>) seatInfos);
+
+                //Clear top
+//        checkout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                startActivity(checkout);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 
     public void getCard(){
@@ -181,4 +204,12 @@ public class TicketBookActivity extends AppCompatActivity {
             }
         });
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        // Gửi broadcast khi bấm nút "Back"
+//        Intent intent = new Intent("BACK_TO_HOME");
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+//        super.onBackPressed();
+//    }
 }

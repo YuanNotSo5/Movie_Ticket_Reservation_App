@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -71,7 +72,7 @@ public class DetailActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView titleTxt, movieRateTxt, movieTimeTxt, movieSumInfo, showCmtTxt;
     private long idFilm;
-    private ImageView pic2, backImg;
+    private ImageView pic2, backImg, isFavoriteImg;
     private RecyclerView.Adapter adapterActorList, adapterCategory, adapterComment;
     private RecyclerView recyclerViewActors, recyclerViewCategory, recyclerViewComment;
     private NestedScrollView scrollView;
@@ -83,9 +84,10 @@ public class DetailActivity extends AppCompatActivity {
     //Bottom Sheet Dilog
     BottomSheetDialog dialog;
     ProgressDialog pd;
+    boolean isFavorite = false;
     ArrayList<CommentItem> listComment;
-    String userName, avatar;
-
+    String userName, avatar, idDocumentItem;
+    private boolean isShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,18 +96,25 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         int tmp = getIntent().getIntExtra("id",0);
+        isShow = getIntent().getBooleanExtra("isShow", true);
         idFilm = Long.valueOf(String.valueOf(tmp));
-        Log.d("idFilm", String.valueOf(idFilm));
         initView();
 
         Uri uri = getIntent().getData();
         if(uri!=null){
             List<String> params = uri.getPathSegments();
-            String id = params.get(params.size()-1);
-            Toast.makeText(DetailActivity.this, "id="+id, Toast.LENGTH_SHORT).show();
-//            idFilm = Long.parseLong(id);
+            String id = params.get(params.size()-2);
+            String isShowString = params.get(params.size()-1);
+            idFilm = Long.parseLong(id);
+            isShow = Boolean.parseBoolean(isShowString);
         }
-
+        if (!isShow) {
+            bookTicketBtn.setVisibility(View.GONE);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) shareBtn.getLayoutParams();
+            params.weight = 2;
+            shareBtn.setLayoutParams(params);
+            shareBtn.setPadding(450, 0, 0, 0);
+        }
         sendRequest();
 
         shareBtn.setOnClickListener(new View.OnClickListener() {
@@ -145,8 +154,10 @@ public class DetailActivity extends AppCompatActivity {
         userService.getUserByEmail(new UserService.getUser() {
             @Override
             public void getUser(User user) {
-                if(user != null)
+                if(user != null) {
                     idUser = user.getId();
+                    getFavorite();
+                }
             }
 
             @Override
@@ -160,6 +171,58 @@ public class DetailActivity extends AppCompatActivity {
                 Log.d("Get User Error:", e.getMessage());
             }
         });
+
+        isFavoriteImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(idUser == -1){
+                    checkAuthenticationDialog();
+                }
+                else{
+                    isFavorite = !isFavorite;
+                    if (isFavorite) {
+                        isFavoriteImg.setImageResource(R.drawable.baseline_favorite_24);
+
+                    } else {
+                        isFavoriteImg.setImageResource(R.drawable.baseline_favorite_24_white);
+                    }
+                    updateFavoriteFilm(isFavorite);
+                }
+
+            }
+        });
+
+    }
+
+    private void updateFavoriteFilm(boolean isFavorite) {
+        if(idDocumentItem==""){
+            userService.addNewFavFilm(idFilm, idUser, new UserService.FavoriteReceivedListener() {
+                @Override
+                public void onSuccess(boolean isFavoriteListener, String idDocument) {
+                    idDocumentItem = idDocument;
+                    Toast.makeText(DetailActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+
+                }
+            });
+        }
+        else{
+            userService.updateStateFavFilm(isFavorite, idDocumentItem, new UserService.FavoriteReceivedListener() {
+                @Override
+                public void onSuccess(boolean isFavoriteListener, String idDocument) {
+                    Toast.makeText(DetailActivity.this, "SuccessUpdate", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+
+                }
+            });
+        }
+
 
     }
 
@@ -211,7 +274,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bottomSheetBehavior.setState(bottomSheetBehavior.STATE_HIDDEN);
-                Log.d("List Comment before close", String.valueOf(listComment));
+                recyclerViewComment.setAdapter(adapterComment);
                 adapterComment.notifyDataSetChanged();
             }
         });
@@ -266,6 +329,12 @@ public class DetailActivity extends AppCompatActivity {
                             inputCmt.setText("");
                             rate.setRating(0.0F);
                             listComment.add(newCmt);
+                            Log.d("GAOOOOOOOO", String.valueOf(listComment));
+                            if (adapterComment == null) {
+                                adapterComment = new CommentAdapter(listComment);
+                                recyclerViewComments.setAdapter(adapterComment);
+                            }
+
                             adapterComment.notifyDataSetChanged();
                         }
                         @Override
@@ -284,16 +353,42 @@ public class DetailActivity extends AppCompatActivity {
         final String appPackageName = context.getPackageName();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Wanna Watch Some Nice Things?: http://www.cnnmovieticket.com/details/" + String.valueOf(id));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Wanna Watch Some Nice Things?: http://www.cnnmovieticket.com/details/" + String.valueOf(id)+"/"+String.valueOf(isShow));
         sendIntent.setType("text/plain");
         if(sendIntent.resolveActivity(getPackageManager())!=null){
             context.startActivity(sendIntent);
         }
     }
 
+    private void getFavorite(){
+        UserService userService = new UserService();
+        userService.getFavorite(idUser, idFilm, new UserService.FavoriteReceivedListener() {
+
+
+            @Override
+            public void onSuccess(boolean isFavoriteListener, String idDocument) {
+
+                isFavorite = isFavoriteListener;
+                idDocumentItem = idDocument;
+                if(isFavoriteListener){
+                    isFavoriteImg.setImageResource(R.drawable.baseline_favorite_24);
+                } else {
+                    isFavoriteImg.setImageResource(R.drawable.baseline_favorite_24_white);
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                isFavoriteImg.setImageResource(R.drawable.baseline_favorite_24_white);
+                isFavorite = false;
+            }
+        });
+    }
+
     private void sendRequest(){
         //Film
         FilmService film = new FilmService();
+
         progressBar.setVisibility(View.VISIBLE);
         scrollView.setVisibility(View.GONE);
         film.getFilmById(idFilm, new FilmService.OnFilmDataReceivedListener() {
@@ -340,12 +435,15 @@ public class DetailActivity extends AppCompatActivity {
                     adapterCategory=new CategoryListAdapter(item.getGenres());
                     recyclerViewCategory.setAdapter(adapterCategory);
                 }
+
+
+
                 //Load Cmt
                 userService.LoadAllCmtOfFilm(idFilm, new UserService.CmtListListener() {
                     @Override
                     public void onCmtDataReceived(ArrayList<CommentItem> listCommentsOfFilm) {
                         listComment = listCommentsOfFilm;
-                        adapterComment = new CommentAdapter(listCommentsOfFilm);
+                        adapterComment = new CommentAdapter(listComment);
                         recyclerViewComment.setAdapter(adapterComment);
                     }
                     @Override
@@ -360,6 +458,9 @@ public class DetailActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             }
         });
+
+
+
     }
 
 //    private void sendRequest(){
@@ -418,6 +519,7 @@ public class DetailActivity extends AppCompatActivity {
         showCmtTxt = findViewById(R.id.showCommentListTxt);
 
         backImg = findViewById(R.id.backImg);
+        isFavoriteImg = findViewById(R.id.isFavorite);
         recyclerViewCategory = findViewById(R.id.genreView);
         recyclerViewActors = findViewById(R.id.imagesRecycler);
         recyclerViewComment = findViewById(R.id.commentContainer);
@@ -427,6 +529,9 @@ public class DetailActivity extends AppCompatActivity {
 
         //Btn
         bookTicketBtn = findViewById(R.id.bookTicketBtn);
+
+
+
         shareBtn = findViewById(R.id.sharingBtn);
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override

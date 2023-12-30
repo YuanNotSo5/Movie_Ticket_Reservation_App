@@ -16,58 +16,46 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.appbookticketmovie.HomeActivities.DetailActivity;
+import com.example.appbookticketmovie.Models.Cinema;
 import com.example.appbookticketmovie.Models.GenreItem;
 import com.example.appbookticketmovie.Models.ListFilm;
 import com.example.appbookticketmovie.R;
 
 import java.util.ArrayList;
 
-public class SearchAdapter extends RecyclerView.Adapter <SearchAdapter.ViewHolder> {
-    ListFilm items;
+public class CinemaAdapter extends RecyclerView.Adapter <CinemaAdapter.ViewHolder> {
+    ArrayList<Cinema> items;
     Context context;
 
-    public SearchAdapter(ListFilm item) {
-        this.items = item;
+    public CinemaAdapter(ArrayList<Cinema> items) {
+        this.items = items;
     }
 
     @NonNull
     @Override
-    public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CinemaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View inflate= LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_item_search,parent, false);
-        return new SearchAdapter.ViewHolder(inflate);
+        return new CinemaAdapter.ViewHolder(inflate);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder holder, int position) {
-        holder.nameFilmItemTxt.setText(items.getData().get(position).getTitle());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.nameFilmItemTxt.setText(items.get(position).getName());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
         Glide.with(context)
-                .load(items.getData().get(position).getPoster())
+                .load("https://firebasestorage.googleapis.com/v0/b/android-movie-ticket-booking.appspot.com/o/Logo%2Fcgvlogo.jpg?alt=media&token=a104a570-97e5-4e0e-973f-2a21bdd7d54d")
                 .apply(requestOptions)
                 .into(holder.imgMovie);
 
-        ArrayList<GenreItem> listGenre = items.getData().get(position).getGenres();
-        String nameCate = "";
-        for (GenreItem item : listGenre) {
-            nameCate = nameCate + "," + item.getName();
-        }
-
-        holder.cateItemTxt.setText(nameCate);
-        holder.timeItemTxt.setText(items.getData().get(position).getRuntime());
-        holder.rateItemTxt.setText(items.getData().get(position).getImdbRating());
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
-            intent.putExtra("id", items.getData().get(position).getId());
-            context.startActivity(intent);
-        });
+        holder.cateItemTxt.setText(items.get(position).getAddress());
     }
 
     @Override
     public int getItemCount() {
-        return items.getData().size();
+        return items.size();
     }
 
     public class ViewHolder  extends RecyclerView.ViewHolder{
@@ -75,7 +63,6 @@ public class SearchAdapter extends RecyclerView.Adapter <SearchAdapter.ViewHolde
         ImageView imgMovie;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             nameFilmItemTxt = itemView.findViewById(R.id.nameFilmItemTxt);
             timeItemTxt = itemView.findViewById(R.id.timeItemTxt);
             rateItemTxt = itemView.findViewById(R.id.rateItemTxt);

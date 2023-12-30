@@ -47,11 +47,31 @@ public class FilmItem {
     @Expose
     private String trailer;
 
+    @SerializedName("isShow")
+    @Expose
+    private boolean isShow;
+
     public FilmItem() {
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public String getDirectors() {
+        return directors;
+    }
+
+    public void setDirectors(String directors) {
+        this.directors = directors;
+    }
+
+    public boolean isShow() {
+        return isShow;
+    }
+
+    public void setShow(boolean show) {
+        isShow = show;
     }
 
     public void setId(Integer id) {
@@ -157,12 +177,13 @@ public class FilmItem {
                 ", released='" + released + '\'' +
                 ", runtime='" + runtime + '\'' +
                 ", directors='" + directors + '\'' +
-                ", actors='" + actors + '\'' +
+                ", actors=" + actors +
                 ", plot='" + plot + '\'' +
                 ", country='" + country + '\'' +
                 ", imdbRating='" + imdbRating + '\'' +
                 ", genres=" + genres +
                 ", trailer='" + trailer + '\'' +
+                ", isShow=" + isShow +
                 '}';
     }
 }

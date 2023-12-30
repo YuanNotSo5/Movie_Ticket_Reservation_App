@@ -111,9 +111,7 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
                 String formattedPrice = new DecimalFormat("0.00").format(finalPrice);
                 String price_str = formattedPrice.split("\\.")[0];
                 seat.putExtra("price", Long.valueOf(price_str));
-
                 context.startActivity(seat);
-
             }
         });
 

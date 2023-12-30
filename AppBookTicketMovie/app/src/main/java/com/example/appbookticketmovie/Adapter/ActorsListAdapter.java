@@ -1,6 +1,7 @@
 package com.example.appbookticketmovie.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.appbookticketmovie.HomeActivities.DetailActivity;
+import com.example.appbookticketmovie.HomeActivities.SortFilmActors;
 import com.example.appbookticketmovie.Models.ActorItem;
 import com.example.appbookticketmovie.R;
 
@@ -38,6 +41,13 @@ public class ActorsListAdapter extends RecyclerView.Adapter<ActorsListAdapter.Vi
                 .load(listActors.get(position).getPhotoUrl())
                 .into(holder.pic);
         holder.txtNameActor.setText(listActors.get(position).getName());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), SortFilmActors.class);
+            intent.putExtra("idActor", listActors.get(position).getId());
+            intent.putExtra("nameActor", listActors.get(position).getName());
+            context.startActivity(intent);
+        });
     }
 
     @Override

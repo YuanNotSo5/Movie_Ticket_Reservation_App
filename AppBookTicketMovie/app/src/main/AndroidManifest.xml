@@ -17,7 +17,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".PayPalActivity"
+            android:name=".HomeActivities.SortFilmActors"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivities.SortFilmItem"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivities.PayPalActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivities.SpecificList"

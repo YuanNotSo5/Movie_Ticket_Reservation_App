@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,13 +14,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.appbookticketmovie.Adapter.CinemaAdapter;
 import com.example.appbookticketmovie.Adapter.FilmListAdapter;
 import com.example.appbookticketmovie.Adapter.SearchAdapter;
 import com.example.appbookticketmovie.Models.ActorItem;
+import com.example.appbookticketmovie.Models.Cinema;
 import com.example.appbookticketmovie.Models.FilmItem;
 import com.example.appbookticketmovie.Models.GenreItem;
 import com.example.appbookticketmovie.Models.ListFilm;
 import com.example.appbookticketmovie.R;
+import com.example.appbookticketmovie.Services.CinemaService;
 import com.example.appbookticketmovie.Services.FilmService;
 
 import java.util.ArrayList;
@@ -26,55 +31,29 @@ import java.util.ArrayList;
 public class SpecificList extends AppCompatActivity {
 
     EditText search;
-    TextView cancelResult;
+    TextView cancelResult, waitingTxt, findCinema, findFilm;
     ArrayList<FilmItem> searchResults = new ArrayList<>();
+    ArrayList<FilmItem> listFilm;
+    ArrayList<Cinema> searchCinemaResults = new ArrayList<>();
+    ArrayList<Cinema> listCinema;
 
     private RecyclerView.Adapter adapterSearch;
     private RecyclerView recyclerViewResult;
     ListFilm items;
+    boolean isFindCinema = false;
 
     private FilmService filmService = new FilmService();
+    private CinemaService cinemaService = new CinemaService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_list);
         getSupportActionBar().hide();
+
         init();
-
-        ArrayList<FilmItem> filmItemList = new ArrayList<>();
-
-        FilmItem film1 = new FilmItem();
-        film1.setId(1);
-        film1.setTitle("Inception");
-        film1.setPoster("inception_poster.jpg");
-        film1.setReleased("2022-01-01");
-        film1.setRuntime("148 min");
-        film1.setDirector("Christopher Nolan");
-
-        // Add actors
-        ArrayList<ActorItem> actors1 = new ArrayList<>();
-        actors1.add(new ActorItem(1L, "Leonardo DiCaprio", "Cobb"));
-        actors1.add(new ActorItem(1L, "Leonardo DiCaprio", "Cobb"));
-        film1.setActors(actors1);
-
-        film1.setPlot("A thief who enters the dreams of others to steal their secrets.");
-
-        film1.setCountry("USA");
-        film1.setImdbRating("8.8");
-
-        // Add genres
-        ArrayList<GenreItem> genres1 = new ArrayList<>();
-        genres1.add(new GenreItem("Action",1L));
-
-        film1.setGenres(genres1);
-
-        film1.setTrailer("https://www.youtube.com/watch?v=YoHD9XEInc0");
-
-        filmItemList.add(film1);
-
-//        items = new ListFilm(filmItemList);
-
+        getList();
+        getListCinema();
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -83,13 +62,36 @@ public class SpecificList extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                performSearch(charSequence.toString());
+                if (charSequence.length() == 0) {
+                    waitingTxt.setVisibility(View.VISIBLE);
+                    recyclerViewResult.setVisibility(View.GONE);
+                } else {
+                    if(isFindCinema){
+                        resultFindCinema(charSequence.toString());
+                    }else{
+                        performSearch(charSequence.toString());
+                    }
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
+
+        search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    search.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.search, 0);
+                    search.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gray_color)));
+                } else {
+                    search.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.search, 0, 0, 0);
+                    search.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.orange_color)));
+                }
+            }
+        });
+
 
         cancelResult.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,26 +100,117 @@ public class SpecificList extends AppCompatActivity {
             }
         });
 
-
+        findCinema.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground = getResources().getDrawable(R.drawable.schedule_background);
+                findCinema.setBackground(newBackground);
+                Drawable originalBackground = getResources().getDrawable(R.drawable.cinema_background);
+                findFilm.setBackground(originalBackground);
+                isFindCinema = true;
+                waitingTxt.setVisibility(View.VISIBLE);
+                recyclerViewResult.setVisibility(View.GONE);
+            }
+        });
+        findFilm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground = getResources().getDrawable(R.drawable.schedule_background);
+                findFilm.setBackground(newBackground);
+                Drawable originalBackground = getResources().getDrawable(R.drawable.cinema_background);
+                findCinema.setBackground(originalBackground);
+                isFindCinema = false;
+                waitingTxt.setVisibility(View.VISIBLE);
+                recyclerViewResult.setVisibility(View.GONE);
+            }
+        });
     }
 
-    private void performSearch(final String searchString) {
-
-        Log.d("Eyyyy",searchString);
-        filmService.getFilmsByName(searchString, new FilmService.OnFilmDataReceivedListener() {
-            @Override
-            public void onFilmDataReceived(final ArrayList<FilmItem> listFilms) {
-                searchResults.clear();
-                searchResults.addAll(listFilms);
-                items = new ListFilm(searchResults);
-                adapterSearch = new SearchAdapter(items);
-                recyclerViewResult.setAdapter(adapterSearch);
-                adapterSearch.notifyDataSetChanged();
+    private void resultFindCinema(String query) {
+        recyclerViewResult.setVisibility(View.VISIBLE);
+        searchCinemaResults.clear();
+        for (Cinema item : listCinema) {
+            if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                searchCinemaResults.add(item);
             }
+        }
+        if(searchCinemaResults.size()==0){
+            for (Cinema item : listCinema) {
+                if (item.getAddress().toLowerCase().contains(query.toLowerCase())) {
+                    searchCinemaResults.add(item);
+                }
+            }
+        }
 
+        if(searchCinemaResults.size()!=0){
+            adapterSearch = new CinemaAdapter(searchCinemaResults);
+            recyclerViewResult.setAdapter(adapterSearch);
+            waitingTxt.setVisibility(View.GONE);
+
+        }else{
+            waitingTxt.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void performSearch(String query) {
+        recyclerViewResult.setVisibility(View.VISIBLE);
+        searchResults.clear();
+        for (FilmItem item : listFilm) {
+            if (item.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                searchResults.add(item);
+            }
+        }
+        if(searchResults.size()==0){
+            for (FilmItem item : listFilm) {
+                if (item.getPlot().toLowerCase().contains(query.toLowerCase())) {
+                    searchResults.add(item);
+                }
+            }
+        }
+        if(searchResults.size()==0){
+            for (FilmItem item : listFilm) {
+                for (ActorItem actorItem : item.getActors()){
+                    if (actorItem.getName().toLowerCase().contains(query.toLowerCase())) {
+                        searchResults.add(item);
+                    }
+                }
+            }
+        }
+        if(searchResults.size()!=0){
+            items = new ListFilm(searchResults);
+            adapterSearch = new SearchAdapter(items);
+            recyclerViewResult.setAdapter(adapterSearch);
+            waitingTxt.setVisibility(View.GONE);
+
+        }else{
+            waitingTxt.setVisibility(View.VISIBLE);
+        }
+    }
+    private void getList() {
+        listFilm = new ArrayList<>();
+        filmService.getFilmCloudStore(new FilmService.OnFilmDataReceivedListener() {
+            @Override
+            public void onFilmDataReceived(ArrayList<FilmItem> listFilms) {
+                listFilm = listFilms;
+            }
             @Override
             public void onError(String errorMessage) {
                 Log.d("Error", errorMessage);
+            }
+        });
+    }
+
+    private void getListCinema(){
+        listCinema = new ArrayList<>();
+        cinemaService.getAllCinema(new CinemaService.getCinemas() {
+            @Override
+            public void getCinemas(ArrayList<Cinema> cinemas) {
+                listCinema = cinemas;
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         });
     }
@@ -128,5 +221,9 @@ public class SpecificList extends AppCompatActivity {
         recyclerViewResult.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         search = findViewById(R.id.searchItem);
         cancelResult = findViewById(R.id.cancelItem);
+        waitingTxt = findViewById(R.id.waitingTxt);
+        findCinema = findViewById(R.id.findCinema);
+        findFilm = findViewById(R.id.findFilm);
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.appbookticketmovie.HomeActivities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,7 +49,7 @@ public class ETicket extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eticket);
         init();
-
+        getSupportActionBar().hide();
         Intent book = getIntent();
         idFilm = book.getLongExtra("idFilm",0);
         nameFilm = book.getStringExtra("nameFilm");
@@ -193,6 +194,18 @@ public class ETicket extends AppCompatActivity {
         recyclerViewTicket = findViewById(R.id.ticketContainer);
         recyclerViewTicket.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Chuyển sang trang DetailsActivity
+        Intent detailsIntent = new Intent(this, DetailActivity.class);
+        detailsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        int tmp = (int) idFilm;
+        detailsIntent.putExtra("id", tmp);
+        detailsIntent.putExtra("isShow",true);
+        startActivity(detailsIntent);
+        super.onBackPressed();
     }
 
 }

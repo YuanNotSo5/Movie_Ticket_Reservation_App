@@ -56,6 +56,7 @@ public class FilmListAdapter extends RecyclerView.Adapter<FilmListAdapter.ViewHo
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
             intent.putExtra("id", items.getData().get(position).getId());
+            intent.putExtra("isShow", items.getData().get(position).isShow());
             context.startActivity(intent);
         });
     }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -64,7 +65,7 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
     String selectedIds = "";
     String idRoom, nameFilm, time, date, nameCinema, addressCinema;
     int idCinema;
-    long price, total = 0;
+    long price, idFilm, total = 0;
 
     Button btnConfirm;
     TextView totalAmount, filmInfo;
@@ -91,6 +92,9 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
         time = getIntent().getStringExtra("time");
         nameCinema = getIntent().getStringExtra("nameCinema");
         addressCinema = getIntent().getStringExtra("addressCinema");
+        idFilm = getIntent().getLongExtra("idFilm",0);
+
+        Log.d("idFilm2", String.valueOf(idFilm));
 //        idRoom = "A";
 //        price = 45000;
 
@@ -113,30 +117,19 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CinemaService updateMap = new CinemaService();
-                String newMap = new String(charMap);
-                updateMap.updateSeatMap(newMap, idCinema, idRoom, new CinemaService.OnCinemaDataReceivedListener2() {
-                    @Override
-                    public void onCinemaDataReceived(Room room) {
-                        Intent intent = new Intent(BookMapSeat.this, TicketBookActivity.class);
-                        intent.putExtra("nameFilm", nameFilm);
-                        intent.putExtra("nameCinema", nameCinema);
-                        intent.putExtra("date", date);
-                        intent.putExtra("time", time);
-                        intent.putExtra("total", Long.valueOf(totalAmount.getText().toString()));
-                        intent.putExtra("idRoom", idRoom);
-                        intent.putExtra("addressCinema", addressCinema);
-
-                        intent.putParcelableArrayListExtra("bookseat", (ArrayList<? extends Parcelable>) seatInfoList);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-
+                Intent intent = new Intent(BookMapSeat.this, TicketBookActivity.class);
+                intent.putExtra("nameFilm", nameFilm);
+                intent.putExtra("nameCinema", nameCinema);
+                intent.putExtra("date", date);
+                intent.putExtra("time", time);
+                intent.putExtra("total", Long.valueOf(totalAmount.getText().toString()));
+                intent.putExtra("idRoom", idRoom);
+                intent.putExtra("addressCinema", addressCinema);
+                intent.putExtra("newMap",new String(charMap));
+                intent.putExtra("idCinema", idCinema);
+                intent.putExtra("idFilm", idFilm);
+                intent.putParcelableArrayListExtra("bookseat", (ArrayList<? extends Parcelable>) seatInfoList);
+                startActivity(intent);
             }
         });
     }

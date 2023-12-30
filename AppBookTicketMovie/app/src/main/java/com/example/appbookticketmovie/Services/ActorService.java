@@ -11,6 +11,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -78,6 +79,34 @@ public class ActorService {
                         }
                     } else {
                         listener.onError("Error loading Film_Genre data");
+                    }
+                });
+    }
+
+    //Get All Actors In Store
+    public void getActors(ActorService.OnActorsDataReceivedListener callback) {
+        ArrayList<ActorItem> actorList = new ArrayList<>();
+        db.collection("Actors")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String name = document.getString("name");
+                                String photoUri = document.getString("photo");
+                                long id = document.getLong("id");
+                                ActorItem item = new ActorItem(id,name,photoUri);
+                                actorList.add(item);
+                            }
+                            if (callback != null) {
+                                callback.onDataReceived(actorList);
+                            }
+                        } else {
+                            if (callback != null) {
+                                callback.onError("Error loading data from Firestore");
+                            }
+                        }
                     }
                 });
     }

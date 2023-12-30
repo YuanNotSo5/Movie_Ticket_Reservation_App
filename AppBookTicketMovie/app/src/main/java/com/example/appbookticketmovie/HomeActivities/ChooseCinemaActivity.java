@@ -3,11 +3,15 @@ package com.example.appbookticketmovie.HomeActivities;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -36,16 +40,22 @@ public class ChooseCinemaActivity extends AppCompatActivity {
     private CinemaService cinemaService;
     private long idFilm;
     private Double extra_price = 0.0;
+
+    private boolean backToDetailsRequested = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_cinema);
-
+        getSupportActionBar().hide();
         idFilm = getIntent().getLongExtra("idFilm",0);
 
         Intent seat = new Intent(this, BookMapSeat.class);
         System.out.println("idFilm:" + idFilm);
         seat.putExtra("idFilm", idFilm);
+
+
+
 
         cinemaService = new CinemaService();
 
@@ -63,6 +73,7 @@ public class ChooseCinemaActivity extends AppCompatActivity {
         getDays();
         getCinema();
     }
+
     public void getCinema(){
         cinemaService.getAllCinema(new CinemaService.getCinemas() {
             @Override
