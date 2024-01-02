@@ -34,9 +34,15 @@ import com.example.appbookticketmovie.Models.Bill;
 import com.example.appbookticketmovie.Models.ListBill;
 import com.example.appbookticketmovie.Models.ListFilmFavorite;
 import com.example.appbookticketmovie.Models.User;
+import com.example.appbookticketmovie.R;
 import com.example.appbookticketmovie.Services.FilmService;
 import com.example.appbookticketmovie.Services.UserService;
 import com.example.appbookticketmovie.databinding.FragmentUserBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
@@ -50,6 +56,8 @@ public class UserFragment extends Fragment {
     private UserViewModel userViewModel;
     private VideoView backgroundView;
     private FirebaseAuth firebaseAuth;
+
+    private GoogleSignInClient googleSignInClient;
     private UserService userService;
     private FilmService filmService = new FilmService();
 
@@ -102,6 +110,18 @@ public class UserFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         firebaseAuth.signOut();
+                        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                .requestIdToken(getString(R.string.client_id))
+                                .requestEmail()
+                                .build();
+                        googleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+
+                        googleSignInClient.signOut().addOnCompleteListener(getActivity(),
+                                new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                    }
+                                });
 
                         getActivity().finish();
                         startActivity(getActivity().getIntent());

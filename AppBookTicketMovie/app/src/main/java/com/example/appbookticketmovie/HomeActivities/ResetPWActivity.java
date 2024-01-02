@@ -3,10 +3,13 @@ package com.example.appbookticketmovie.HomeActivities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appbookticketmovie.R;
 import com.example.appbookticketmovie.Services.UserService;
@@ -41,15 +44,48 @@ public class ResetPWActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean status = true;
-                String email = tvRegister.getText().toString();
+                String email = reset_et_email.getText().toString().trim();
                 if(email.equals("")){
                     reset_et_email.setError("Please Enter Email");
                     reset_et_email.setEnabled(true);
                     status = false;
                 }
                 if(status){
-                    sendEmail(email);
+                    userService.checkEmail(email, new UserService.checkEmailExisted() {
+                        @Override
+                        public void onSuccess(boolean status) {
+                            if(status){
+                                sendEmail(email);
+                            }
+                            else{
+                                Toast.makeText(ResetPWActivity.this, "No Account Exists", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+                            Log.d("Reset PWD Error", e.getMessage());
+                        }
+                    });
                 }
+            }
+        });
+
+        tvRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent login = new Intent(ResetPWActivity.this, RegisterActivity.class);
+                startActivity(login);
+                finish();
+            }
+        });
+
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent login = new Intent(ResetPWActivity.this, LoginActivity.class);
+                startActivity(login);
+                finish();
             }
         });
     }
@@ -59,13 +95,16 @@ public class ResetPWActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-
+                        Toast.makeText(ResetPWActivity.this, "Link For Password Reset Has Been Sent To Your Email", Toast.LENGTH_SHORT).show();
+                        Intent login = new Intent(ResetPWActivity.this, LoginActivity.class);
+                        startActivity(login);
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Toast.makeText(ResetPWActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

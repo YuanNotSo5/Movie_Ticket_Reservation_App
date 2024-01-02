@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.appbookticketmovie.Models.User;
 import com.example.appbookticketmovie.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private CollectionReference userDB;
+
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +66,19 @@ public class RegisterActivity extends AppCompatActivity {
 
         warning.setVisibility(View.GONE);
 
+        countUser();
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean status = true;
 
-                String username = etUsername.getText().toString();
-                String email = etEmail.getText().toString();
-                String fullname = etFullname.getText().toString();
-                String password = etPassword.getText().toString();
-                String confirmPass = etConfirmPassword.getText().toString();
-                String phoneNumber = etPhoneNumber.getText().toString();
+                String username = etUsername.getText().toString().trim();
+                String email = etEmail.getText().toString().trim();
+                String fullname = etFullname.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+                String confirmPass = etConfirmPassword.getText().toString().trim();
+                String phoneNumber = etPhoneNumber.getText().toString().trim();
 
 
                 if(username.equals("")){
@@ -121,8 +126,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 if(status){
-                    String count = String.valueOf(countUser());
-                    User user = new User(Long.valueOf(count)+1,username, email, fullname, phoneNumber);
+                    String c = String.valueOf(count+1);
+                    User user = new User(Long.valueOf(c),username, email, fullname, phoneNumber);
 
                     DocumentReference result = userDB.document(email);
 
@@ -172,12 +177,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public int countUser(){
-        Task<QuerySnapshot> data = userDB.get();
-        if(data.isSuccessful()){
-            List<DocumentSnapshot> d = data.getResult().getDocuments();
-            return ((List<?>) d).size();
-        }
-        return 0;
+    public void countUser(){
+        Task<QuerySnapshot> data = userDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                    count = task.getResult().size();
+            }
+        });
     }
 }

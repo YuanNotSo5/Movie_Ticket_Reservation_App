@@ -155,11 +155,27 @@
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFCACA"
+            android:shadowColor="#000000"
+            android:text="Send Email"
+            android:textAllCaps="true"
+            android:textColor="#EC0000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvLogin"
+            app:layout_constraintEnd_toEndOf="@+id/view6"
+            app:layout_constraintStart_toStartOf="@+id/view6"
+            app:layout_constraintTop_toBottomOf="@+id/reset_et_email_layout" />
+
         <TextView
             android:id="@+id/tvLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:clickable="true"
             android:text="Already Have An Account?"
             android:textColor="#0022FF"
             android:textSize="16sp"
@@ -176,24 +192,10 @@
             android:text="Don't Have Any Account?"
             android:textColor="#0022FF"
             android:textSize="16sp"
+            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FFCACA"
-            android:shadowColor="#000000"
-            android:text="Send Email"
-            android:textAllCaps="true"
-            android:textColor="#EC0000"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvLogin"
-            app:layout_constraintEnd_toEndOf="@+id/view6"
-            app:layout_constraintStart_toStartOf="@+id/view6"
-            app:layout_constraintTop_toBottomOf="@+id/reset_et_email_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

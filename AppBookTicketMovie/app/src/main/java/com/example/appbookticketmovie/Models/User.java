@@ -1,6 +1,7 @@
 package com.example.appbookticketmovie.Models;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class User {
@@ -25,7 +26,18 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.avatar = "https://firebasestorage.googleapis.com/v0/b/android-movie-ticket-booking.appspot.com/o/Users%2Favatar.jpg?alt=media&token=a6d87d7b-fea7-4fd6-8cc0-f164e1314d57";
         this.point = 0;
-        this.card = null;
+        this.card = new HashMap<>();
+    }
+
+    public User(Long id, String username, String email, String fullname) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.fullname = fullname;
+        this.phoneNumber = null;
+        this.avatar = "https://firebasestorage.googleapis.com/v0/b/android-movie-ticket-booking.appspot.com/o/Users%2Favatar.jpg?alt=media&token=a6d87d7b-fea7-4fd6-8cc0-f164e1314d57";
+        this.point = 0;
+        this.card = new HashMap<>();
     }
     public User(String username, String email, String fullname, String phoneNumber) {
         this.id = id;

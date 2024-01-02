@@ -92,9 +92,14 @@ public class UserService {
 
     public interface AddTicketInfoListener {
         void onSuccess();
-
         void onError(String errorMessage);
     }
+
+    public interface checkEmailExisted {
+        void onSuccess(boolean status);
+        void onFailure(Exception e);
+    }
+
 
     public void getUserByEmail(getUser callback){
         FirebaseUser currUser = firebaseAuth.getCurrentUser();
@@ -130,7 +135,24 @@ public class UserService {
                         }
                     });
         }
+    }
 
+    public void checkEmail(String email, checkEmailExisted callback){
+        userDB.whereEqualTo("email", email).get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if(!task.getResult().isEmpty()){
+                            callback.onSuccess(true);
+                        }else{
+                            callback.onSuccess(false);
+                        }
+                    }else{
+                        callback.onFailure(task.getException());
+                    }
+                }
+            });
     }
 
     public void updateUser(User user, UserService.editUserInfo callback){
