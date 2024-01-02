@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.appbookticketmovie.Models.Bill;
 import com.example.appbookticketmovie.Models.CommentItem;
 import com.example.appbookticketmovie.Models.Schedule;
 import com.example.appbookticketmovie.Models.Ticket;
@@ -324,13 +325,20 @@ public class UserService {
             Map<String, Object> data = new HashMap<>();
             data.put("idFilm", item.getIdFilm());
             data.put("idUser", idUser);
+            data.put("idCinema", item.getIdCinema());
             data.put("seat", item.getNumberSeat());
             data.put("barcode", item.getBarcode());
             data.put("date", item.getDate());
-            data.put("idCinema", item.getCinema());
+            data.put("addressCinema", item.getAddressCinema());
+            data.put("nameCinema", item.getCinema());
             data.put("price", item.getPriceDetail());
             data.put("room", item.getRoom());
             data.put("time", item.getTime());
+            data.put("paymentMethod", item.getPaymentMethod());
+            data.put("paymentStatus", item.isPaymentStatus());
+            data.put("total", item.getTotal());
+            data.put("point", item.getPoint());
+            data.put("idBill", item.getIdBill());
 
             db.collection("User_Ticket")
                     .add(data)
@@ -347,6 +355,46 @@ public class UserService {
                         }
                     });
         }
+    }
+
+    // Add Bill
+    public interface IdBillReceiver {
+        void onSuccess(String idBill);
+
+        void onError(String errorMessage);
+    }
+    public void addBill(Bill item, IdBillReceiver listener) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("idFilm", item.getIdFilm());
+        data.put("idUser", item.getIdUser());
+        data.put("idCinema", item.getIdCinema());
+        data.put("nameCinema", item.getNameCinema());
+        data.put("addressCinema", item.getAddressCinema());
+        data.put("nameFilm", item.getNameFilm());
+        data.put("listSeats", item.getListSeats());
+        data.put("buyingdate", item.getBuyingdate());
+        data.put("method", item.getMethod());
+        data.put("total", item.getTotal());
+        data.put("point", item.getPoint());
+
+        db.collection("Bill")
+                .add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+
+                        listener.onSuccess(documentReference.getId());
+                        Log.d("TEST", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onError(String.valueOf(e));
+                        Log.w("TEST", "Error adding document", e);
+                    }
+                });
+
     }
 
 

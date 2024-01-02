@@ -65,6 +65,7 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
     String selectedIds = "";
     String idRoom, nameFilm, time, date, nameCinema, addressCinema;
     int idCinema;
+
     long price, idFilm, total = 0;
 
     Button btnConfirm;
