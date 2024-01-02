@@ -17,6 +17,9 @@ public class Bill {
 
     private long idUser;
 
+    public Bill() {
+    }
+
     public Bill(ArrayList<seatInfo> listSeats, long idFilm, String nameFilm, int idCinema, long total, String nameCinema, String addressCinema, String buyingdate, String method, int point, long idUser) {
         this.listSeats = listSeats;
         this.idFilm = idFilm;

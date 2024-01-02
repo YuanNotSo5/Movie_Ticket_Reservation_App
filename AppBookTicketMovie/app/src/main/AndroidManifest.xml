@@ -19,6 +19,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".HomeActivities.DetailBill"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivities.ResetPWActivity"
             android:exported="false" />
         <activity

@@ -26,15 +26,20 @@ import android.widget.VideoView;
 
 import com.example.appbookticketmovie.Adapter.CinemaAdapter;
 import com.example.appbookticketmovie.Adapter.FavoriteFilmAdapter;
+import com.example.appbookticketmovie.Adapter.HistoryBillAdapter;
 import com.example.appbookticketmovie.HomeActivities.LoginActivity;
 import com.example.appbookticketmovie.HomeActivities.RegisterActivity;
 import com.example.appbookticketmovie.HomeActivities.UpdateAccountActivity;
+import com.example.appbookticketmovie.Models.Bill;
+import com.example.appbookticketmovie.Models.ListBill;
 import com.example.appbookticketmovie.Models.ListFilmFavorite;
 import com.example.appbookticketmovie.Models.User;
 import com.example.appbookticketmovie.Services.FilmService;
 import com.example.appbookticketmovie.Services.UserService;
 import com.example.appbookticketmovie.databinding.FragmentUserBinding;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -114,6 +119,20 @@ public class UserFragment extends Fragment {
             public void getUser(User user) {
                 if(user != null) {
                     idUser = user.getId();
+                    userService.getBillById(idUser, new UserService.HistoryBillReceivedListener() {
+                        @Override
+                        public void onSuccess(ArrayList<ListBill> listBill) {
+                            adapterContainer = new HistoryBillAdapter(listBill);
+                            containerContent.setAdapter(adapterContainer);
+                            TextView history = binding.tvTickets;
+                            history.setText(String.valueOf(listBill.size()));
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+
+                        }
+                    });
                 }
             }
 
@@ -144,6 +163,18 @@ public class UserFragment extends Fragment {
                 } else {
                     isHistoryBtnClicked = true;
                     Toast.makeText(requireContext(), "Your Bill", Toast.LENGTH_SHORT).show();
+                    userService.getBillById(idUser, new UserService.HistoryBillReceivedListener() {
+                        @Override
+                        public void onSuccess(ArrayList<ListBill> listBill) {
+                            adapterContainer = new HistoryBillAdapter(listBill);
+                            containerContent.setAdapter(adapterContainer);
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+
+                        }
+                    });
 
                 }
             }
@@ -189,13 +220,6 @@ public class UserFragment extends Fragment {
                 }
             }
         });
-        //Favorite Film
-
-
-
-
-
-
 
         return root;
     }
@@ -213,6 +237,7 @@ public class UserFragment extends Fragment {
             getUserInfo();
         }
     }
+
 
     public void getUserInfo(){
         userService = new UserService();

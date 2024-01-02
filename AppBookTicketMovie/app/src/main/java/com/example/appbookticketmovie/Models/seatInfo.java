@@ -10,6 +10,9 @@ public class seatInfo  implements Parcelable {
     private String type;
     private long priceDetail;
 
+    public seatInfo() {
+    }
+
     public seatInfo(String seat, String type, long priceDetail) {
         this.seat = seat;
         this.type = type;

@@ -4,8 +4,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.appbookticketmovie.Models.ActorItem;
 import com.example.appbookticketmovie.Models.Bill;
 import com.example.appbookticketmovie.Models.CommentItem;
+import com.example.appbookticketmovie.Models.FilmItem;
+import com.example.appbookticketmovie.Models.GenreItem;
+import com.example.appbookticketmovie.Models.ListBill;
 import com.example.appbookticketmovie.Models.Schedule;
 import com.example.appbookticketmovie.Models.Ticket;
 import com.example.appbookticketmovie.Models.User;
@@ -23,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -152,11 +157,11 @@ public class UserService {
         FirebaseUser currUser = firebaseAuth.getCurrentUser();
 
         currUser.updatePassword(newPwd).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                callback.updatePassword(true);
-            }
-        })
+                    @Override
+                    public void onSuccess(Void unused) {
+                        callback.updatePassword(true);
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -326,19 +331,20 @@ public class UserService {
             data.put("idFilm", item.getIdFilm());
             data.put("idUser", idUser);
             data.put("idCinema", item.getIdCinema());
-            data.put("seat", item.getNumberSeat());
+            data.put("NumberSeat", item.getNumberSeat());
             data.put("barcode", item.getBarcode());
             data.put("date", item.getDate());
             data.put("addressCinema", item.getAddressCinema());
-            data.put("nameCinema", item.getCinema());
-            data.put("price", item.getPriceDetail());
-            data.put("room", item.getRoom());
+            data.put("Cinema", item.getCinema());
+            data.put("priceDetail", item.getPriceDetail());
+            data.put("Room", item.getRoom());
             data.put("time", item.getTime());
             data.put("paymentMethod", item.getPaymentMethod());
             data.put("paymentStatus", item.isPaymentStatus());
             data.put("total", item.getTotal());
             data.put("point", item.getPoint());
             data.put("idBill", item.getIdBill());
+            data.put("Film", item.getFilm());
 
             db.collection("User_Ticket")
                     .add(data)
@@ -396,6 +402,78 @@ public class UserService {
                 });
 
     }
+
+    //Get Bill of User
+    public interface HistoryBillReceivedListener {
+        void onSuccess(ArrayList<ListBill> listBill);
+
+        void onError(String errorMessage);
+    }
+    public void getBillById(long idUser, HistoryBillReceivedListener listener) {
+        ArrayList<ListBill> listBill = new ArrayList<>();
+        db.collection("Bill")
+                .whereEqualTo("idUser", idUser)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot billItem : task.getResult()) {
+                                Bill item = billItem.toObject(Bill.class);
+                                listBill.add(new ListBill(item, billItem.getId()));
+                                if (listBill.size() == task.getResult().size()) {
+                                    listener.onSuccess(listBill);
+                                }
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting films: ", task.getException());
+                            if (listener != null) {
+                                listener.onError("Error loading data from Firestore");
+                            }
+                        }
+                    }
+                });
+    }
+    //Get Details Bill of User
+    public interface DetailBillReceivedListener {
+        void onSuccess(ArrayList<Ticket> details);
+
+        void onError(String errorMessage);
+    }
+
+    public void getDetailsOfBill(long idUser, String idBill, DetailBillReceivedListener listener) {
+        ArrayList<Ticket> listBill = new ArrayList<>();
+        db.collection("User_Ticket")
+                .whereEqualTo("idUser", idUser)
+                .whereEqualTo("idBill", idBill)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot billItem : task.getResult()) {
+                                Ticket item = billItem.toObject(Ticket.class);
+                                listBill.add(item);
+                                if (listBill.size() == task.getResult().size()) {
+                                    listener.onSuccess(listBill);
+                                }
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting films: ", task.getException());
+                            if (listener != null) {
+                                listener.onError("Error loading data from Firestore");
+                            }
+                        }
+                    }
+                });
+    }
+
+
+
+
+
+
+
 
 
     public interface FavoriteReceivedListener {

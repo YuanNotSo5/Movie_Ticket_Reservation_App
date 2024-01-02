@@ -22,6 +22,6 @@ public class ResetPWActivity extends AppCompatActivity {
         tvLogin = findViewById(R.id.tvLogin);
         tvRegister = findViewById(R.id.tvRegister);
         reset_et_email = findViewById(R.id.reset_et_email);
-        reset = findViewById(R.id.)
+        reset = findViewById(R.id.btnReset);
     }
 }
