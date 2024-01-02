@@ -1,5 +1,6 @@
 package com.example.appbookticketmovie.HomeActivities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.appbookticketmovie.R;
 import com.example.appbookticketmovie.Services.UserService;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +41,7 @@ public class ResetPWActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean status = true;
-                String email = tvRegister.getText();
+                String email = tvRegister.getText().toString();
                 if(email.equals("")){
                     reset_et_email.setError("Please Enter Email");
                     reset_et_email.setEnabled(true);
@@ -55,10 +57,16 @@ public class ResetPWActivity extends AppCompatActivity {
     public void sendEmail(String email){
         firebaseAuth.sendPasswordResetEmail(email)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
+                    @Override
+                    public void onSuccess(Void unused) {
 
-            }
-        })
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 }
