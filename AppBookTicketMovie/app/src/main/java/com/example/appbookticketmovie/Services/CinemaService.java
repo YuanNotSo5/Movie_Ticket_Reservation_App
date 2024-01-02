@@ -14,6 +14,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -36,30 +37,37 @@ public class CinemaService {
         void onCinemaDataReceived(Room room);
         void onError(String errorMessage);
     }
-    public void getAllCinema (CinemaService.getCinemas callback){
-        ArrayList<Cinema> cinemas = new ArrayList<>();
+    public void getAllCinema (getCinemas callback){
         cinemaDB.get()
                 .addOnCompleteListener(task -> {
+                    ArrayList<Cinema> cinemas = new ArrayList<>();
+
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Long id = document.getLong("id");
-                            String name = document.getString("name");
-                            String address = document.getString("address");
+                        if(task.getResult().size() == 0){
+                            callback.getCinemas(cinemas);
+                        }else{
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Long id = document.getLong("id");
+                                String name = document.getString("name");
+                                String address = document.getString("address");
+                                GeoPoint location = document.getGeoPoint("location");
 
-                            Cinema cinema = new Cinema(id, name, address);
-                            cinemas.add(cinema);
+                                Cinema cinema = new Cinema(id, name, address, location);
+                                cinemas.add(cinema);
 
-                            if (cinemas.size() == task.getResult().size()) {
-                                callback.getCinemas(cinemas);
+                                if (cinemas.size() == task.getResult().size()) {
+                                    callback.getCinemas(cinemas);
+                                }
                             }
                         }
+
                     } else {
                         callback.onFailure(task.getException());
                     }
                 });
     }
 
-    public void getMapRoom(String idRoom, int idCinema, CinemaService.OnCinemaDataReceivedListener2 listener){
+    public void getMapRoom(String idRoom, int idCinema, OnCinemaDataReceivedListener2 listener){
         DocumentReference roomDocRef = db.collection("Cinema")
                 .document(String.valueOf(idCinema))
                 .collection("room")
@@ -91,7 +99,7 @@ public class CinemaService {
         });
     }
 
-    public void updateSeatMap(String newMap, int idCinema, String idRoom, CinemaService.OnCinemaDataReceivedListener2 listener){
+    public void updateSeatMap(String newMap, int idCinema, String idRoom, OnCinemaDataReceivedListener2 listener){
         DocumentReference messageRef = db
                 .collection("Cinema").document(String.valueOf(idCinema))
                 .collection("room").document(idRoom);

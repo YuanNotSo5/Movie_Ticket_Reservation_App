@@ -38,7 +38,7 @@ public class ScheduleService {
         void getTimeSchedules(String filmName, String timeStart, String timeEnd);
         void onFailure(String errMess);
     }
-    public void getCinemaSchedules (Long idCinema, Long idFilm, String date, ScheduleService.getSchedules callback){
+    public void getCinemaSchedules (Long idCinema, Long idFilm, String date, getSchedules callback){
         scheduleDB
                 .whereEqualTo("date", date)
                 .whereEqualTo("idFilm", idFilm)
@@ -48,22 +48,26 @@ public class ScheduleService {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             ArrayList<Schedule> schedules = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Long idCinema = document.getLong("idCinema");
-                                Long idFilm = document.getLong("idFilm");
-                                Timestamp timestamp = document.getTimestamp("timestamp");
-                                Double price = document.getDouble("price");
-                                String room = document.getString("room");
+                            if(task.getResult().size() == 0){
+                                callback.getCinemaSchedules(schedules);
+                            }else{
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Long idCinema = document.getLong("idCinema");
+                                    Long idFilm = document.getLong("idFilm");
+                                    Timestamp timestamp = document.getTimestamp("timestamp");
+                                    Double price = document.getDouble("price");
+                                    String room = document.getString("room");
 
-                                Schedule schedule = new Schedule(idCinema, idFilm, timestamp, price, room);
-                                schedules.add(schedule);
-                                System.out.println("inner schedules: "+schedules);
-                                if(schedules.size() == task.getResult().size()){
-                                    callback.getCinemaSchedules(schedules);
+                                    Schedule schedule = new Schedule(idCinema, idFilm, timestamp, price, room);
+                                    schedules.add(schedule);
+
+                                    if(schedules.size() == task.getResult().size()){
+                                        callback.getCinemaSchedules(schedules);
+                                    }
                                 }
                             }
-                            System.out.println("schedules: "+schedules);
-                            System.out.println("size: "+task.getResult().size());
+//                            System.out.println("schedules: "+schedules);
+//                            System.out.println("size: "+task.getResult().size());
 
                         } else {
                             callback.onFailure(task.getException());
@@ -72,7 +76,7 @@ public class ScheduleService {
                 });
     }
 
-    public void getTime(Long idFilm, Schedule schedule, ScheduleService.getTimeSchedules callback){
+    public void getTime(Long idFilm, Schedule schedule, getTimeSchedules callback){
         filmService.getFilmById(idFilm, new FilmService.OnFilmDataReceivedListener() {
             @Override
             public void onFilmDataReceived(ArrayList<FilmItem> listFilms) {

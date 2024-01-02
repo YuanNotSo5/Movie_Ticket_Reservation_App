@@ -3,15 +3,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/date_background">
+    android:background="@drawable/date_background"
+    android:id="@+id/day_layout"
+    android:layout_marginTop="-5dp"
+    android:layout_marginRight="10dp">
 
     <TextView
         android:id="@+id/tvDay"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="70dp"
         android:gravity="center"
         android:text="Day"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:clickable="true"/>
+        android:clickable="true" />
 </LinearLayout>
