@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".HomeActivities.LoginActivity">
+    tools:context=".HomeActivities.ResetPWActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -102,7 +102,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
-        android:layout_height="350dp"
+        android:layout_height="400dp"
         app:layout_constraintBottom_toBottomOf="@+id/view7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,29 +118,31 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvForgot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:shadowColor="#C80000"
-            android:text="login"
+            android:text="Forgot Password"
             android:textAllCaps="true"
             android:textColor="#FF7171"
-            android:textSize="34sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/view6"
             app:layout_constraintStart_toStartOf="@+id/view6"
             app:layout_constraintTop_toTopOf="@+id/view6" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login_et_email_layout"
+            android:id="@+id/reset_et_email_layout"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/view6"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+            app:layout_constraintTop_toBottomOf="@+id/tvForgot">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_et_email"
+                android:id="@+id/reset_et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -154,37 +156,46 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login_et_password_layout"
+            android:id="@+id/reset_et_password_layout"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="@+id/login_et_email_layout"
-            app:layout_constraintTop_toBottomOf="@+id/login_et_email_layout">
+            app:layout_constraintStart_toStartOf="@+id/reset_et_email_layout"
+            app:layout_constraintTop_toBottomOf="@+id/reset_et_email_layout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_et_password"
+                android:id="@+id/reset_et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
                 android:drawableLeft="@drawable/baseline_lock_24"
                 android:drawablePadding="5dp"
-                android:hint="Password"
+                android:hint="New Password"
                 android:inputType="textPassword"
                 android:textColorHint="#640000"
                 android:textSize="18sp" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/textView30"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reset_et_password_confirm_layout"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Quên Mật Khẩu"
-            android:textColor="@color/dark_red_color"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/login_et_password_layout"
-            app:layout_constraintTop_toBottomOf="@+id/login_et_password_layout" />
+            app:layout_constraintStart_toStartOf="@+id/reset_et_password_layout"
+            app:layout_constraintTop_toBottomOf="@+id/reset_et_password_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reset_et_password_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:drawableLeft="@drawable/baseline_lock_24"
+                android:drawablePadding="5dp"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:textColorHint="#640000"
+                android:textSize="18sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/textView6"
@@ -194,18 +205,30 @@
             android:text="Incorrect Email Or Password"
             android:textColor="#FF0000"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/login_et_password_layout"
-            app:layout_constraintTop_toBottomOf="@+id/login_et_password_layout" />
+            app:layout_constraintStart_toStartOf="@+id/reset_et_password_confirm_layout"
+            app:layout_constraintTop_toBottomOf="@+id/reset_et_password_confirm_layout" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tvLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="9dp"
+            android:text="Already Have An Account?"
+            android:textColor="#0022FF"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvRegister"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button" />
+
+        <TextView
+            android:id="@+id/tvRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:text="Don't Have Any Account?"
             android:textColor="#0022FF"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/view2"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -213,37 +236,17 @@
             android:id="@+id/button"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:backgroundTint="#FFCACA"
             android:shadowColor="#000000"
-            android:text="Login"
+            android:text="Reset"
             android:textAllCaps="true"
             android:textColor="#EC0000"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintBottom_toTopOf="@+id/tvRegister"
             app:layout_constraintEnd_toEndOf="@+id/view6"
             app:layout_constraintStart_toStartOf="@+id/view6"
-            app:layout_constraintTop_toBottomOf="@+id/textView30" />
-
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000000"
-            app:layout_constraintBottom_toTopOf="@+id/button4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="13dp"
-            android:drawableLeft="@drawable/common_google_signin_btn_icon_light"
-            android:text="Sign up with Google"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/view6"
-            app:layout_constraintStart_toStartOf="@+id/view6" />
+            app:layout_constraintTop_toBottomOf="@+id/reset_et_password_confirm_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
