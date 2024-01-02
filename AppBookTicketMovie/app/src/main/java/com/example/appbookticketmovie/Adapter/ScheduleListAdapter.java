@@ -100,6 +100,7 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
                 seat.putExtra("idRoom", data.get(position).getRoom());
                 seat.putExtra("idCinema", idCinema);
                 seat.putExtra("addressCinema", cinemaAddress);
+                seat.putExtra("nameCinema", cinemas.get(position).getName());
                 seat.putExtra("idFilm", idFilm);
 
 

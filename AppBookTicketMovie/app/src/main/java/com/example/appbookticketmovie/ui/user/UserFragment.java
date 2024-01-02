@@ -129,8 +129,6 @@ public class UserFragment extends Fragment {
             }
         });
 
-        Log.d("idUserrrrr", String.valueOf(idUser));
-
         //Config
         containerContent = binding.containerInfo;
         containerContent.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -145,6 +143,8 @@ public class UserFragment extends Fragment {
                     isHistoryBtnClicked = false;
                 } else {
                     isHistoryBtnClicked = true;
+                    Toast.makeText(requireContext(), "Your Bill", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

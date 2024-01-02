@@ -9,11 +9,15 @@ import java.io.ByteArrayOutputStream;
 public class Ticket {
 
     private long idFilm;
+    private String idBill;
+
+    private int idCinema;
     private long idUser;
     private String Film;
     private String Time;
     private String Date;
     private String Cinema;
+    private String addressCinema;
 
     //Seat
     private String NumberSeat;
@@ -25,6 +29,10 @@ public class Ticket {
 
     private boolean paymentStatus = false;
     private String paymentMethod = "CASH";
+
+    private long total;
+
+    private int point;
 
     public Ticket(long idFilm, String film, String time, String date, String cinema, String numberSeat, String room, String typeSeat, long priceDetail, String barcode) {
         this.idFilm = idFilm;
@@ -68,7 +76,94 @@ public class Ticket {
         this.barcode = barcode;
     }
 
+    public Ticket(long idFilm, String idBill, int idCinema, long idUser, String film, String time, String date, String cinema, String addressCinema, String numberSeat, String room, String typeSeat, long priceDetail, String barcode, boolean paymentStatus, String paymentMethod, long total, int point) {
+        this.idFilm = idFilm;
+        this.idBill = idBill;
+        this.idCinema = idCinema;
+        this.idUser = idUser;
+        Film = film;
+        Time = time;
+        Date = date;
+        Cinema = cinema;
+        this.addressCinema = addressCinema;
+        NumberSeat = numberSeat;
+        Room = room;
+        TypeSeat = typeSeat;
+        this.priceDetail = priceDetail;
+        this.barcode = barcode;
+        this.paymentStatus = paymentStatus;
+        this.paymentMethod = paymentMethod;
+        this.total = total;
+        this.point = point;
+    }
 
+    public String getIdBill() {
+        return idBill;
+    }
+
+    public void setIdBill(String idBill) {
+        this.idBill = idBill;
+    }
+
+    public Ticket(long idFilm, int idCinema, long idUser, String film, String time, String date, String cinema, String addressCinema, String numberSeat, String room, String typeSeat, long priceDetail, String barcode, boolean paymentStatus, String paymentMethod, long total, int point) {
+        this.idFilm = idFilm;
+        this.idCinema = idCinema;
+        this.idUser = idUser;
+        Film = film;
+        Time = time;
+        Date = date;
+        Cinema = cinema;
+        this.addressCinema = addressCinema;
+        NumberSeat = numberSeat;
+        Room = room;
+        TypeSeat = typeSeat;
+        this.priceDetail = priceDetail;
+        this.barcode = barcode;
+        this.paymentStatus = paymentStatus;
+        this.paymentMethod = paymentMethod;
+        this.total = total;
+        this.point = point;
+    }
+
+    public int getIdCinema() {
+        return idCinema;
+    }
+
+    public void setIdCinema(int idCinema) {
+        this.idCinema = idCinema;
+    }
+
+    public String getAddressCinema() {
+        return addressCinema;
+    }
+
+    public void setAddressCinema(String addressCinema) {
+        this.addressCinema = addressCinema;
+    }
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
+
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
 
     public long getIdFilm() {
         return idFilm;
@@ -193,5 +288,6 @@ public class Ticket {
         byte[] decodedBytes = Base64.decode(encodedString, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
+
 
 }
