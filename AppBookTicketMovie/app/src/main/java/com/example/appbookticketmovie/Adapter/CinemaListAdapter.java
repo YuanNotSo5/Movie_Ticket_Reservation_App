@@ -117,6 +117,8 @@ public class CinemaListAdapter extends RecyclerView.Adapter<CinemaListAdapter.Vi
     public void updateDate(String newDate){
 //        this.prev_date = this.date;
         this.date = newDate;
+        seat.removeExtra("date");
+        seat.putExtra("date", date);
         notifyDataSetChanged();
     }
     public void getSchedule(Long idCinema, ArrayList<Schedule> schedulesList, ScheduleListAdapter scheduleListAdapter, RecyclerView recyclerViewSchedule) {

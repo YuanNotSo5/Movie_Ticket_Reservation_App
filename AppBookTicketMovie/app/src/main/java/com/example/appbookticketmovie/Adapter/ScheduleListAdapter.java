@@ -95,7 +95,6 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
                 Integer idCinema = Integer.valueOf(data.get(position).getIdCinema().toString());
 
                 seat.putExtra("time", holder.timeStart.getText().toString() + " - " + holder.timeEnd.getText().toString());
-                seat.putExtra("date", date);
                 seat.putExtra("nameFilm", nameFilm);
                 seat.putExtra("idRoom", data.get(position).getRoom());
                 seat.putExtra("idCinema", idCinema);
@@ -125,6 +124,12 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
 
     public void updateIntent(Intent seat){
         this.seat = seat;
+    }
+
+    public void updateDate(String newDate){
+//        this.prev_date = this.date;
+        this.date = newDate;
+        notifyDataSetChanged();
     }
 
     public void getFilmItem(){
