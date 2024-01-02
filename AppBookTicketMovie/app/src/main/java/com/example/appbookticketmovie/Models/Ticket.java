@@ -97,6 +97,9 @@ public class Ticket {
         this.point = point;
     }
 
+    public Ticket() {
+    }
+
     public String getIdBill() {
         return idBill;
     }
