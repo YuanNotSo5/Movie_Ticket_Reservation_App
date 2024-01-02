@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHolder>{
     ArrayList<Date> data;
@@ -30,11 +33,15 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
     private FilmService filmService;
     private Intent seat;
 
+    private Map<Integer, ViewHolder> viewHolderMap;
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView day;
+        LinearLayout day_layout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             day = itemView.findViewById(R.id.tvDay);
+            day_layout = itemView.findViewById(R.id.day_layout);
         }
     }
 
@@ -52,14 +59,15 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
         this.cinemaListAdapter = cinemaListAdapter;
         this.seat = seat;
         filmService = new FilmService();
-        if(!data.isEmpty()){
-            String currentDay = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(data.get(0));
-            this.currDate = currentDay;
-        }else{
-            String currentDay = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-            this.currDate = currentDay;
-        }
-        cinemaListAdapter.updateDate(this.currDate);
+//        if(!data.isEmpty()){
+//            String currentDay = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(data.get(0));
+//            this.currDate = currentDay;
+//        }else{
+//            String currentDay = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+//            this.currDate = currentDay;
+//        }
+//        cinemaListAdapter.updateDate(this.currDate);
+        viewHolderMap = new TreeMap<>();
     }
 
     @Override
@@ -67,12 +75,14 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
         Date day = data.get(position);
         String currentDay = new SimpleDateFormat("dd", Locale.getDefault()).format(day);
 
+        viewHolderMap.put(position, holder);
         holder.day.setText(currentDay);
         TextView view = holder.day;
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dayClicked = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(day);
+                String dayClicked = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(data.get(position));
 
                 currDate = dayClicked;
                 cinemaListAdapter.updateDate(dayClicked);
@@ -84,6 +94,8 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
                 }else{
                     cinemaListAdapter.updateExtraPrice(0.0);
                 }
+                updateBackground();
+                holder.day_layout.setBackgroundResource(R.drawable.date_background_selected);
             }
         });
 
@@ -93,12 +105,14 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
     public int getItemCount() {
         return data.size();
     }
-
     public String getCurrDate(){
         return this.currDate;
     }
     public void updateBackground(){
-
+        for(int i = 0; i < getItemCount(); i++){
+            ViewHolder holder =  viewHolderMap.get(i);
+            holder.day_layout.setBackgroundResource(R.drawable.date_background);
+        }
     }
     public void updateIntent(Intent seat){
         this.seat = seat;

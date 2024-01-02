@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Add network state permission (optional) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".Models.App"
@@ -17,6 +17,9 @@
         android:theme="@style/Theme.AppBookTicketMovie"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".HomeActivities.MapActivity"
+            android:exported="false" />
         <activity
             android:name=".HomeActivities.SortFilmActors"
             android:exported="false" />
@@ -44,6 +47,11 @@
         <activity
             android:name=".HomeActivities.ETicket"
             android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDIU_O3plAn0cCs0P9x3pPx4uMcRTmO7SE" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -75,8 +83,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Services.AlarmReceiver"/>
-
+        <receiver android:name=".Services.AlarmReceiver" />
     </application>
 
 </manifest>

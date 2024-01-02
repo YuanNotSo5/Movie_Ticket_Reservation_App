@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Time Start"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -30,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Time End"
             android:textColor="@color/white" />
     </LinearLayout>
 

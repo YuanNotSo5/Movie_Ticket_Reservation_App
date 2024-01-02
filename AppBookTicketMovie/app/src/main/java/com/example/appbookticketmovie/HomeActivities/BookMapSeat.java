@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -117,19 +119,38 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BookMapSeat.this, TicketBookActivity.class);
-                intent.putExtra("nameFilm", nameFilm);
-                intent.putExtra("nameCinema", nameCinema);
-                intent.putExtra("date", date);
-                intent.putExtra("time", time);
-                intent.putExtra("total", Long.valueOf(totalAmount.getText().toString()));
-                intent.putExtra("idRoom", idRoom);
-                intent.putExtra("addressCinema", addressCinema);
-                intent.putExtra("newMap",new String(charMap));
-                intent.putExtra("idCinema", idCinema);
-                intent.putExtra("idFilm", idFilm);
-                intent.putParcelableArrayListExtra("bookseat", (ArrayList<? extends Parcelable>) seatInfoList);
-                startActivity(intent);
+                if(!seatInfoList.isEmpty()){
+                    Intent intent = new Intent(BookMapSeat.this, TicketBookActivity.class);
+                    intent.putExtra("nameFilm", nameFilm);
+                    intent.putExtra("nameCinema", nameCinema);
+                    intent.putExtra("date", date);
+                    intent.putExtra("time", time);
+                    intent.putExtra("total", Long.valueOf(totalAmount.getText().toString()));
+                    intent.putExtra("idRoom", idRoom);
+                    intent.putExtra("addressCinema", addressCinema);
+                    intent.putExtra("newMap",new String(charMap));
+                    intent.putExtra("idCinema", idCinema);
+                    intent.putExtra("idFilm", idFilm);
+                    intent.putParcelableArrayListExtra("bookseat", (ArrayList<? extends Parcelable>) seatInfoList);
+                    startActivity(intent);
+                }
+                else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BookMapSeat.this);
+                    builder.setTitle("Warning");
+                    builder.setMessage("Please choose seats you want to book before continuing");
+                    builder.setCancelable(true);
+
+                    builder.setPositiveButton(
+                            "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+
             }
         });
     }
