@@ -47,7 +47,7 @@
             android:textSize="20dp" />
 
         <LinearLayout
-            android:id="@+id/linearLayout6"
+            android:id="@+id/favoriteFilmBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

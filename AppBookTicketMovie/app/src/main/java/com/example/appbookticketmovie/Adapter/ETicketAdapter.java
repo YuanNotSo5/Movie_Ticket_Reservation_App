@@ -51,7 +51,6 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
 
         String barcode = listTicket.get(position).getBarcode();
         holder.mainBarcode.setImageBitmap(listTicket.get(position).stringToBitmap(barcode));
-        holder.barcode.setImageBitmap(listTicket.get(position).stringToBitmap(barcode));
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.example.appbookticketmovie.Models.FilmFrequent;
 import com.example.appbookticketmovie.Models.FilmItem;
 import com.example.appbookticketmovie.Models.GenreItem;
 import com.example.appbookticketmovie.Models.ListFilm;
+import com.example.appbookticketmovie.Models.ListFilmFavorite;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.AggregateQuery;
@@ -18,6 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
@@ -363,5 +366,51 @@ public class FilmService {
                     }
                 });
     }
+
+
+    // Get list film favorite of an user
+    public interface OnFilmFavoriteFrequentDataReceivedListener {
+        void onSuccess (ArrayList<ListFilmFavorite> listFavoriteFilm);
+        void onError(String errorMessage);
+    }
+
+    public void getFavoriteList(long idUser, OnFilmFavoriteFrequentDataReceivedListener listener) {
+
+        ArrayList<ListFilmFavorite> listFavFilm = new ArrayList<>();
+        db.collection("FavoriteFilm")
+                .whereEqualTo("idUser", idUser)
+                .whereEqualTo("isFavorite", true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                long idFilm = document.getLong("idFilm");
+                                String idDocument = document.getId();
+                                getFilmById(idFilm, new OnFilmDataReceivedListener() {
+                                    @Override
+                                    public void onFilmDataReceived(ArrayList<FilmItem> listFilms) {
+                                        listFavFilm.add(new ListFilmFavorite(listFilms, idDocument));
+                                        if (listFavFilm.size() == task.getResult().size()) {
+                                            listener.onSuccess(listFavFilm);
+                                        }
+                                    }
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        listener.onError(errorMessage);
+                                    }
+                                });
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                            listener.onError(String.valueOf(task.getException()));
+                        }
+                    }
+                });
+    }
+
+
 
 }

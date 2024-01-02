@@ -381,6 +381,7 @@ public class UserService {
                 });
     }
 
+
     //Add new favorite
     public void addNewFavFilm(long idFilm, long idUser, FavoriteReceivedListener listener) {
 

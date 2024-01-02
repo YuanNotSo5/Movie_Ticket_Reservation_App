@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,24 +19,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.appbookticketmovie.Adapter.CinemaAdapter;
+import com.example.appbookticketmovie.Adapter.FavoriteFilmAdapter;
 import com.example.appbookticketmovie.HomeActivities.LoginActivity;
 import com.example.appbookticketmovie.HomeActivities.RegisterActivity;
 import com.example.appbookticketmovie.HomeActivities.UpdateAccountActivity;
+import com.example.appbookticketmovie.Models.ListFilmFavorite;
 import com.example.appbookticketmovie.Models.User;
+import com.example.appbookticketmovie.Services.FilmService;
 import com.example.appbookticketmovie.Services.UserService;
 import com.example.appbookticketmovie.databinding.FragmentUserBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+
 public class UserFragment extends Fragment {
+    private long idUser = -1;
 
     private FragmentUserBinding binding;
     private UserViewModel userViewModel;
     private VideoView backgroundView;
     private FirebaseAuth firebaseAuth;
     private UserService userService;
+    private FilmService filmService = new FilmService();
+
+    private LinearLayout historyBtn, favBtn, pointBtn;
+
+    private RecyclerView containerContent;
+    private RecyclerView.Adapter adapterContainer;
+    private boolean isHistoryBtnClicked = false;
+    private boolean isFavBtnClicked = false;
+    private boolean isPointBtnClicked = false;
+
+
     public static UserFragment newInstance() {
         return new UserFragment();
     }
@@ -83,6 +105,96 @@ public class UserFragment extends Fragment {
                 dialogBuilder.create().show();
             }
         });
+
+
+        //Get user id
+        userService = new UserService();
+        userService.getUserByEmail(new UserService.getUser() {
+            @Override
+            public void getUser(User user) {
+                if(user != null) {
+                    idUser = user.getId();
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d("Get User Error:", errorMessage);
+
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("Get User Error:", e.getMessage());
+            }
+        });
+
+        Log.d("idUserrrrr", String.valueOf(idUser));
+
+        //Config
+        containerContent = binding.containerInfo;
+        containerContent.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        historyBtn = binding.historyBtn;
+        favBtn = binding.favoriteFilmBtn;
+        pointBtn = binding.pointBtn;
+        //Get click to change content and change background
+        historyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isHistoryBtnClicked) {
+                    isHistoryBtnClicked = false;
+                } else {
+                    isHistoryBtnClicked = true;
+                }
+            }
+        });
+        favBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isFavBtnClicked){
+                    isFavBtnClicked = false;
+                }
+                else {
+                    isFavBtnClicked = true;
+                    Toast.makeText(requireContext(), "Your favorite film", Toast.LENGTH_SHORT).show();
+
+                    filmService.getFavoriteList(idUser, new FilmService.OnFilmFavoriteFrequentDataReceivedListener() {
+                        @Override
+                        public void onSuccess(ArrayList<ListFilmFavorite> listFavoriteFilm) {
+                            adapterContainer = new FavoriteFilmAdapter(listFavoriteFilm);
+                            containerContent.setAdapter(adapterContainer);
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+        pointBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isPointBtnClicked){
+                    isPointBtnClicked = false;
+                }
+                else {
+                    isPointBtnClicked = true;
+
+
+
+
+                }
+            }
+        });
+        //Favorite Film
+
+
+
+
+
 
 
         return root;
@@ -139,8 +251,8 @@ public class UserFragment extends Fragment {
                 });
             }
         }).start();
-
     }
+
     public void displaySelectionDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
         dialogBuilder.setTitle("You are not logged in");

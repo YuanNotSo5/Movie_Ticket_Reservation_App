@@ -59,7 +59,7 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout8"
+        android:id="@+id/pointBtn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
@@ -103,8 +103,8 @@
         android:text="Kết quả tìm kiếm "
         android:textColor="#FFFFFF"
         android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout8"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout8" />
+        app:layout_constraintStart_toStartOf="@+id/pointBtn"
+        app:layout_constraintTop_toBottomOf="@+id/pointBtn" />
 
     <TextView
         android:id="@+id/waitingTxt"

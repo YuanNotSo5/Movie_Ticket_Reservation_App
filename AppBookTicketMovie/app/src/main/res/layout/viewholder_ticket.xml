@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_color">
+    android:background="@drawable/user_history_background">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -225,9 +225,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="24dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
@@ -237,118 +235,152 @@
             android:layout_height="match_parent"
             android:background="@drawable/tickettemplate">
 
-            <TextView
-                android:id="@+id/dateTxt"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="90dp"
-                android:layout_marginEnd="223dp"
-                android:text="25-12-2023"
-                android:textColor="#FFFFFF"
-                android:textSize="10dp"
+                android:layout_marginStart="110dp"
+                android:layout_marginTop="85dp"
+                android:layout_marginEnd="102dp"
+                android:minHeight="45dp"
+                android:maxHeight="65dp"
+                android:background="#E02231"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/addressTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:text="223, Le Van Luong, TP.HCM"
-                android:textColor="#FFFFFF"
-                android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/dateTxt"
-                app:layout_constraintTop_toTopOf="@+id/dateTxt" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/timeTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="18:30"
-                android:textColor="#FFFFFF"
-                android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="@+id/dateTxt"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/dateTxt"
-                app:layout_constraintTop_toBottomOf="@+id/dateTxt" />
+                    <TextView
+                        android:id="@+id/dateTxt"
+                        android:layout_width="55dp"
+                        android:layout_height="match_parent"
+                        android:text="25-12-2023"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/nameFilmTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Migration"
-                android:textColor="#FFFFFF"
-                android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="@+id/addressTxt"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/addressTxt"
-                app:layout_constraintTop_toBottomOf="@+id/addressTxt" />
+                    <TextView
+                        android:id="@+id/addressTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="223, Le Van Luong, TP.HCM"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp" />
+                </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:id="@+id/timeTxt"
+                        android:layout_width="55dp"
+                        android:layout_height="match_parent"
+                        android:text="18:30"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
 
+                    <TextView
+                        android:id="@+id/nameFilmTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Migration"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
 
             <ImageView
                 android:id="@+id/barcode"
-                android:rotation="-90"
-                tools:srcCompat="@tools:sample/avatars"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="32dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="4dp"
-                android:layout_marginBottom="10dp"/>
-
-
-
-
-
-
-
-
-            <TextView
-                android:id="@+id/seatTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_marginBottom="22dp"
-                android:rotation="-90"
-                android:text="8"
-                android:textColor="@color/black"
-                android:textSize="12dp"
+                android:layout_marginBottom="10dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/barcode"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/confetti"
+                tools:srcCompat="@drawable/confetti" />
 
-            <TextView
-                android:id="@+id/roomTxt"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:rotation="-90"
-                android:text="A"
-                android:textColor="@color/black"
-                android:textSize="12dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="40dp"
+                android:background="#0F0181"
+                android:gravity="center"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/barcode"
-                app:layout_constraintTop_toBottomOf="@+id/seatTxt" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/typeSeatTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="13dp"
-                android:rotation="-90"
-                android:text="VIP"
-                android:textColor="@color/black"
-                android:textSize="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/seatTxt"
-                app:layout_constraintEnd_toStartOf="@+id/barcode"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/textView31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Room"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/roomTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="A"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/textView32"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seat"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/seatTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="8"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Type"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/typeSeatTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="VIP"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

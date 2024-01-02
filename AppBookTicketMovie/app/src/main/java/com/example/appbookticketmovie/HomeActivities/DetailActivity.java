@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +21,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -51,6 +56,7 @@ import com.example.appbookticketmovie.Models.FilmItem;
 import com.example.appbookticketmovie.Models.GenreItem;
 import com.example.appbookticketmovie.Models.User;
 import com.example.appbookticketmovie.R;
+import com.example.appbookticketmovie.Services.AlarmReceiver;
 import com.example.appbookticketmovie.Services.FilmService;
 import com.example.appbookticketmovie.Services.UserService;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -60,8 +66,11 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -88,7 +97,11 @@ public class DetailActivity extends AppCompatActivity {
     ArrayList<CommentItem> listComment;
     String userName, avatar, idDocumentItem;
     private boolean isShow;
-
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    private Calendar calendar;
+    private String nameFilm, originTime;
+    private int hour = 0, minute = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +112,29 @@ public class DetailActivity extends AppCompatActivity {
         isShow = getIntent().getBooleanExtra("isShow", true);
         idFilm = Long.valueOf(String.valueOf(tmp));
         initView();
+
+        //Notification
+        calendar = Calendar.getInstance();
+        hour = getIntent().getIntExtra("hour", 0);
+        minute = getIntent().getIntExtra("minute", 0);
+        int year = getIntent().getIntExtra("year", 0);
+        int month = getIntent().getIntExtra("month", 0);
+        int day = getIntent().getIntExtra("day", 0);
+        nameFilm = getIntent().getStringExtra("name");
+        originTime = getIntent().getStringExtra("originTime");
+        month = month - 1;
+        calendar.set(year, month, day, hour, minute, 0);
+        Log.d("Hour", String.valueOf(hour));
+        Log.d("Minute", String.valueOf(minute));
+        createNotificationChanel();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String formattedDate = dateFormat.format(calendar.getTime());
+        Log.d("CalendarLog", "Formatted Date: " + formattedDate);
+        Log.d("NameFilm", "Formatted Date: " + nameFilm);
+
+        if(nameFilm!=null){
+            setAlarm();
+        }
 
         Uri uri = getIntent().getData();
         if(uri!=null){
@@ -224,6 +260,41 @@ public class DetailActivity extends AppCompatActivity {
         }
 
 
+    }
+
+//    private void setAlarm(){
+//        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(this, AlarmReceiver.class);
+//        String content = "Phim "+nameFilm+" vào lúc: "+ String.valueOf(hour) + ":" + String.valueOf(minute);
+//        intent.putExtra("notificationContent",content);
+//        pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
+//    }
+
+
+    private void setAlarm() {
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        String content = "Phim " + nameFilm + " vào lúc: " + originTime;
+        intent.putExtra("notificationContent", content);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+    }
+
+    private void createNotificationChanel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "CNN-Reminder";
+            String description = "Chanel For Alarm Manager";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("cnn",name,importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if(notificationManager!=null){
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 
     public void checkAuthenticationDialog() {

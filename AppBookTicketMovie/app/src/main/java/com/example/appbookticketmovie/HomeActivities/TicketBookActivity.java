@@ -3,16 +3,21 @@ package com.example.appbookticketmovie.HomeActivities;
 import static android.view.View.GONE;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.SpannableStringBuilder;
@@ -20,7 +25,6 @@ import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -28,9 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.appbookticketmovie.Adapter.CinemaListAdapter;
 import com.example.appbookticketmovie.Adapter.InvoiceInfoAdapter;
-import com.example.appbookticketmovie.HomeActivities.ChooseCinemaActivity;
 import com.example.appbookticketmovie.Models.Room;
 import com.example.appbookticketmovie.Models.User;
 import com.example.appbookticketmovie.Models.seatInfo;
@@ -42,17 +44,10 @@ import com.paypal.checkout.paymentbutton.PaymentButtonContainer;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.paypal.checkout.approve.Approval;
 import com.paypal.checkout.approve.OnApprove;
@@ -67,21 +62,18 @@ import com.paypal.checkout.order.CaptureOrderResult;
 import com.paypal.checkout.order.OnCaptureComplete;
 import com.paypal.checkout.order.OrderRequest;
 import com.paypal.checkout.order.PurchaseUnit;
-import com.paypal.checkout.paymentbutton.PaymentButtonContainer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 public class TicketBookActivity extends AppCompatActivity {
-    private static final int NOTIFICATION_ID = 1;
+
     private ArrayList<seatInfo> seatInfos;
     private InvoiceInfoAdapter invoiceInfoAdapter;
     private UserService userService;
     private int pay = -1;
     private User currUser;
     private String nameFilm, nameCinema, date, time, idRoom, addressCinema, newMap;
-    private int idCinema, userPoint, pointInUser = 0, newPoint, plusPoint=0;
+    private int idCinema, userPoint, pointInUser = 0, newPoint, plusPoint = 0;
     private long total, newTotal, idFilm;
     RecyclerView recyclerView;
     LinearLayout paymentSection;
@@ -96,22 +88,22 @@ public class TicketBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket_book);
         getSupportActionBar().hide();
+
         Intent book = getIntent();
-        idFilm = book.getLongExtra("idFilm",0);
+        idFilm = book.getLongExtra("idFilm", 0);
         nameFilm = book.getStringExtra("nameFilm");
         nameCinema = book.getStringExtra("nameCinema");
         addressCinema = book.getStringExtra("addressCinema");
         date = book.getStringExtra("date");
         time = book.getStringExtra("time");
         idRoom = book.getStringExtra("idRoom");
-        total = book.getLongExtra("total",0);
+        total = book.getLongExtra("total", 0);
         seatInfos = book.getParcelableArrayListExtra("bookseat");
-        idCinema = book.getIntExtra("idCinema",0);
+        idCinema = book.getIntExtra("idCinema", 0);
         newMap = book.getStringExtra("newMap");
 
 
         userService = new UserService();
-
         cardPaymentBtn = findViewById(R.id.button2);
         paymentSection = findViewById(R.id.card_payment_section);
         checkOutBtn = findViewById(R.id.button5);
@@ -141,10 +133,10 @@ public class TicketBookActivity extends AppCompatActivity {
 //        getCard();
 
 
-
         cardPaymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 paymentSection.setVisibility(View.VISIBLE);
                 checkOutBtn.setVisibility(View.VISIBLE);
                 pay = 1;
@@ -163,23 +155,24 @@ public class TicketBookActivity extends AppCompatActivity {
         checkOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String name, number;
                 boolean status = true;
-                if(pay == 1){
+                if (pay == 1) {
                     System.out.println("Payment Method: " + pay);
                     name = cardName.getText().toString();
                     number = cardNumber.getText().toString();
-                    if(name.equals("")){
+                    if (name.equals("")) {
                         cardName.setError("Please Enter Your Card Name");
                         cardName.setEnabled(true);
                         status = false;
                     }
-                    if(number.equals("")){
+                    if (number.equals("")) {
                         cardNumber.setError("Please Enter Your Card Number");
                         cardNumber.setEnabled(true);
                         status = false;
                     }
-                    if(status) {
+                    if (status) {
                         cardName.setEnabled(false);
                         cardNumber.setEnabled(false);
 
@@ -202,7 +195,7 @@ public class TicketBookActivity extends AppCompatActivity {
                             }
                         });
                     }
-                }else{
+                } else {
                     getETicketAct();
                 }
             }
@@ -256,25 +249,24 @@ public class TicketBookActivity extends AppCompatActivity {
         chkbxPoint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     tvOldPrice.setVisibility(View.VISIBLE);
 
-                    pointInUser = userPoint/10;
-                    if(pointInUser>50){
+                    pointInUser = userPoint / 10;
+                    if (pointInUser > 50) {
                         pointInUser = 50;
                     }
-                    newTotal = (long) (total - (float)(total*(pointInUser*(2/100.0))));
+                    newTotal = (long) (total - (float) (total * (pointInUser * (2 / 100.0))));
                     tvPrice.setText(String.valueOf(newTotal));
 
-                }
-                else{
+                } else {
                     pointInUser = 0;
                     tvOldPrice.setVisibility(GONE);
                     tvPrice.setText(String.valueOf(total));
                     newTotal = total;
                 }
                 updatePoint();
-                tvPointInUse.setText(String.valueOf(pointInUser)+"0");
+                tvPointInUse.setText(String.valueOf(pointInUser) + "0");
             }
         });
 
@@ -283,10 +275,10 @@ public class TicketBookActivity extends AppCompatActivity {
 
     private void updatePoint() {
 
-         newPoint = (userPoint - pointInUser*10);
-         plusPoint = (int) (newTotal/100000);
-         newPoint = newPoint + plusPoint;
-         tvPoint.setText(String.valueOf(plusPoint));
+        newPoint = (userPoint - pointInUser * 10);
+        plusPoint = (int) (newTotal / 100000);
+        newPoint = newPoint + plusPoint;
+        tvPoint.setText(String.valueOf(plusPoint));
     }
 
     private void getPoint() {
@@ -302,18 +294,18 @@ public class TicketBookActivity extends AppCompatActivity {
                             public void run() {
                                 userPoint = user.getPoint();
                                 chkbxPoint.setText(String.valueOf(user.getPoint()));
-                                if(userPoint<10){
+                                if (userPoint < 10) {
                                     chkbxPoint.setVisibility(GONE);
                                     tvPointInUse.setVisibility(GONE);
 
-                                }
-                                else{
+                                } else {
                                     chkbxPoint.setVisibility(View.VISIBLE);
                                     tvPointInUse.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
                     }
+
                     @Override
                     public void onError(String errorMessage) {
                         Log.d("Get User Error:", errorMessage);
@@ -329,10 +321,9 @@ public class TicketBookActivity extends AppCompatActivity {
     }
 
 
-
-    public void getETicketAct(){
+    public void getETicketAct() {
         CinemaService updateMap = new CinemaService();
-        if(pay!=1){
+        if (pay != 1) {
             newPoint = newPoint - plusPoint;
         }
         updateMap.updateSeatMap(newMap, idCinema, idRoom, new CinemaService.OnCinemaDataReceivedListener2() {
@@ -371,25 +362,6 @@ public class TicketBookActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void sendNotification(){
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher_background);
-//        //Cài đặt đtg notification
-//        Notification notification = new Notification.Builder(this)
-//                .setContentTitle("CNN - Cinema NNg")
-//                .setContentText("This is success buy ticket")
-//                .setSmallIcon(R.drawable.avatar)
-//                .setLargeIcon(bitmap)
-//                .build();
-//        //Khai báo notification Manager
-//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//        if(notificationManager!=null){
-//            notificationManager.notify(NOTIFICATION_ID, notification);
-//        }
-//
-//    }
-
 
     public void getCard(){
         userService.getUserByEmail(new UserService.getUser() {
