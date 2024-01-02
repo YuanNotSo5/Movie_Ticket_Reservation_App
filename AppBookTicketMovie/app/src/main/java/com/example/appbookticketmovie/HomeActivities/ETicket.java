@@ -93,18 +93,6 @@ public class ETicket extends AppCompatActivity {
 
                             userTicket.buyTicket(ticketInfo, idUser);
 
-                            int newPoint = point + 1;
-                            userTicket.updatePoint(newPoint, new UserService.pointUpdate() {
-                                @Override
-                                public void updatePoint(boolean status) {
-
-                                }
-
-                                @Override
-                                public void onFailure(Exception e) {
-                                    Log.d("Update Point", e.getMessage());
-                                }
-                            });
                         }
 
                     }
