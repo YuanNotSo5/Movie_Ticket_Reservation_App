@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="@drawable/user_history_background">
 
+    <Button
+        android:id="@+id/convertBarcode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="CONVERT TO QRCODE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+
     <LinearLayout
         android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
@@ -215,6 +226,28 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
+                    android:layout_width="230dp"
+                    android:layout_height="70dp"
+                    android:layout_margin="20dp"
+                    android:rotation="0"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView27"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/QrCode_Image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="12dp"
+                        android:rotation="0"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                </androidx.cardview.widget.CardView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
@@ -223,12 +256,11 @@
         android:layout_width="390dp"
         android:layout_height="150dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="18dp"
         android:layout_marginEnd="12dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+        app:layout_constraintTop_toBottomOf="@+id/convertBarcode">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -241,9 +273,9 @@
                 android:layout_marginStart="110dp"
                 android:layout_marginTop="85dp"
                 android:layout_marginEnd="102dp"
-                android:minHeight="45dp"
-                android:maxHeight="65dp"
                 android:background="#E02231"
+                android:maxHeight="65dp"
+                android:minHeight="45dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

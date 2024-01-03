@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +52,28 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
 
         String barcode = listTicket.get(position).getBarcode();
         holder.mainBarcode.setImageBitmap(listTicket.get(position).stringToBitmap(barcode));
+
+        //Qr code
+        String qrCode = listTicket.get(position).getQrcode();
+        holder.qrcode.setImageBitmap(listTicket.get(position).stringToBitmap(qrCode));
+
+        holder.convertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.convertBtn.getText()=="CONVERT TO QRCODE"){
+                    holder.convertBtn.setText("CONVERT TO BARCODE");
+                    holder.barcode.setVisibility(View.GONE);
+                    holder.qrcode.setVisibility(View.VISIBLE);
+                }
+                else{
+                    holder.convertBtn.setText("CONVERT TO QRCODE");
+                    holder.qrcode.setVisibility(View.GONE);
+                    holder.barcode.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -60,7 +83,8 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView dateTxt, timeTxt, nameFilmTxt, addressTxt, roomTxt, seatTxt, typeSeatTxt, dateMainTxt, timeMainTxt, nameFilmMainTxt, addressMainTxt, roomMainTxt, seatMainTxt, typeSeatMainTxt;
-        ImageView barcode, mainBarcode;
+        ImageView barcode, mainBarcode, qrcode;
+        Button convertBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +104,8 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
             roomMainTxt = itemView.findViewById(R.id.ticketRoom);
             seatMainTxt = itemView.findViewById(R.id.ticketSeatRow);
             typeSeatMainTxt = itemView.findViewById(R.id.ticketSeatType);
+            qrcode = itemView.findViewById(R.id.QrCode_Image);
+            convertBtn = itemView.findViewById(R.id.convertBarcode);
         }
     }
 }

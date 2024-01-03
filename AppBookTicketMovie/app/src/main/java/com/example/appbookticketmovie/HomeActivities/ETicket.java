@@ -141,7 +141,7 @@ public class ETicket extends AppCompatActivity {
         ticketInfo = new ArrayList<>();
 
         for (seatInfo info : seatInfos) {
-            Ticket addTicket = new Ticket(idFilm, idBill, idCinema, idUser, nameFilm, time, date, addressCinema, nameCinema, info.getSeat(), idRoom, info.getType(), info.getPriceDetail(), "", false, "CASH", total, point);
+            Ticket addTicket = new Ticket(idFilm, idBill, idCinema, idUser, nameFilm, time, date, addressCinema, nameCinema, info.getSeat(), idRoom, info.getType(), info.getPriceDetail(), "", "", false, "CASH", total, point);
             if (paymentMethod == 1) {
                 addTicket.setPaymentMethod("CARD");
                 addTicket.setPaymentStatus(true);
@@ -274,10 +274,28 @@ public class ETicket extends AppCompatActivity {
                 Bitmap bitmap = encoder.createBitmap(matrix);
                 String barcodeString = item.bitmapToString(bitmap);
                 item.setBarcode(barcodeString);
+
+                //Qrcode
+                Bitmap bitmap2 = createQrCode(code);
+                String qrCodeString = item.bitmapToString(bitmap2);
+                item.setQrcode(qrCodeString);
             } catch (WriterException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private Bitmap createQrCode(String code) {
+        MultiFormatWriter writer = new MultiFormatWriter();
+        try{
+            BitMatrix matrix = writer.encode(code, BarcodeFormat.QR_CODE,350,350);
+            BarcodeEncoder encoder = new BarcodeEncoder();
+            Bitmap bitmap = encoder.createBitmap(matrix);
+            return bitmap;
+        } catch (WriterException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void init() {

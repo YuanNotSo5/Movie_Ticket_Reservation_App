@@ -27,6 +27,7 @@ public class Ticket {
 
     private String barcode;
 
+    private String qrcode;
     private boolean paymentStatus = false;
     private String paymentMethod = "CASH";
 
@@ -95,6 +96,36 @@ public class Ticket {
         this.paymentMethod = paymentMethod;
         this.total = total;
         this.point = point;
+    }
+
+    public Ticket(long idFilm, String idBill, int idCinema, long idUser, String film, String time, String date, String cinema, String addressCinema, String numberSeat, String room, String typeSeat, long priceDetail, String barcode, String qrcode, boolean paymentStatus, String paymentMethod, long total, int point) {
+        this.idFilm = idFilm;
+        this.idBill = idBill;
+        this.idCinema = idCinema;
+        this.idUser = idUser;
+        Film = film;
+        Time = time;
+        Date = date;
+        Cinema = cinema;
+        this.addressCinema = addressCinema;
+        NumberSeat = numberSeat;
+        Room = room;
+        TypeSeat = typeSeat;
+        this.priceDetail = priceDetail;
+        this.barcode = barcode;
+        this.qrcode = qrcode;
+        this.paymentStatus = paymentStatus;
+        this.paymentMethod = paymentMethod;
+        this.total = total;
+        this.point = point;
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
     }
 
     public Ticket() {
