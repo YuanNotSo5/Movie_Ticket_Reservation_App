@@ -206,10 +206,20 @@
                 android:paddingRight="10dp"
                 android:visibility="gone">
 
+                <com.paypal.checkout.paymentbutton.PaymentButtonContainer
+                    android:id="@+id/payment_button_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:paypal_button_color="silver"
+                    app:paypal_button_label="pay"
+                    app:paypal_button_shape="rectangle"
+                    app:paypal_button_size="large"
+                    app:paypal_button_enabled="true" />
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:expandedHintEnabled="false">
+                    app:expandedHintEnabled="false"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cardName"
@@ -223,7 +233,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
-                    app:expandedHintEnabled="false">
+                    app:expandedHintEnabled="false"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cardNumber"
@@ -245,17 +256,6 @@
             android:text="Thanh Toán"
             android:textAllCaps="true"
             android:visibility="gone"/>
-
-        <com.paypal.checkout.paymentbutton.PaymentButtonContainer
-            android:id="@+id/payment_button_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:paypal_button_color="silver"
-            app:paypal_button_label="pay"
-            app:paypal_button_shape="rectangle"
-            app:paypal_button_size="large"
-            app:paypal_button_enabled="true" />
-
 
 
 

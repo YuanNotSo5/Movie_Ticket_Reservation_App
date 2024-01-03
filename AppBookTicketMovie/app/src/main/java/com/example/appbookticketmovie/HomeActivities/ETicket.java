@@ -137,78 +137,78 @@ public class ETicket extends AppCompatActivity {
 
     }
 
-        private void addTickets(String idBill) {
-            ticketInfo = new ArrayList<>();
+    private void addTickets(String idBill) {
+        ticketInfo = new ArrayList<>();
 
-            for (seatInfo info : seatInfos) {
-                Ticket addTicket = new Ticket(idFilm, idBill, idCinema, idUser, nameFilm, time, date, addressCinema, nameCinema, info.getSeat(), idRoom, info.getType(), info.getPriceDetail(), "", false, "CASH", total, point);
-                if (paymentMethod == 1) {
-                    addTicket.setPaymentMethod("CARD");
-                    addTicket.setPaymentStatus(true);
-                }
-                ticketInfo.add(addTicket);
+        for (seatInfo info : seatInfos) {
+            Ticket addTicket = new Ticket(idFilm, idBill, idCinema, idUser, nameFilm, time, date, addressCinema, nameCinema, info.getSeat(), idRoom, info.getType(), info.getPriceDetail(), "", false, "CASH", total, point);
+            if (paymentMethod == 1) {
+                addTicket.setPaymentMethod("CARD");
+                addTicket.setPaymentStatus(true);
             }
+            ticketInfo.add(addTicket);
+        }
 
-            // Tạo một Thread mới để thực hiện mua vé
-            Thread buyTicketThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // Lưu
-                    UserService userTicket = new UserService();
-                    userTicket.getUserByEmail(new UserService.getUser() {
-                        @Override
-                        public void getUser(User user) {
-                            if (user != null) {
-                                idUser = user.getId();
-                                currUser = user;
+        // Tạo một Thread mới để thực hiện mua vé
+        Thread buyTicketThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Lưu
+                UserService userTicket = new UserService();
+                userTicket.getUserByEmail(new UserService.getUser() {
+                    @Override
+                    public void getUser(User user) {
+                        if (user != null) {
+                            idUser = user.getId();
+                            currUser = user;
 
-                                // Now, you can use idUser and idBill to purchase tickets
-                                userTicket.buyTicket(ticketInfo, idUser);
-                            }
+                            // Now, you can use idUser and idBill to purchase tickets
+                            userTicket.buyTicket(ticketInfo, idUser);
                         }
-
-                        @Override
-                        public void onError(String errorMessage) {
-                            Log.d("Get User Error:", errorMessage);
-                        }
-
-                        @Override
-                        public void onFailure(Exception e) {
-                            Log.d("Get User Error:", e.getMessage());
-                        }
-                    });
-                }
-            });
-
-            // Chạy luồng mua vé
-            buyTicketThread.start();
-
-            // Tạo một luồng mới để cập nhật UI (nếu cần thiết)
-            Thread updateUIThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // Chờ cho luồng mua vé hoàn thành trước khi cập nhật UI
-                    try {
-                        buyTicketThread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
 
-                    // Cập nhật giao diện người dùng ở đây (nếu cần thiết)
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            createBarcode();
-                            adapterTicket = new ETicketAdapter(ticketInfo);
-                            recyclerViewTicket.setAdapter(adapterTicket);
-                        }
-                    });
-                }
-            });
+                    @Override
+                    public void onError(String errorMessage) {
+                        Log.d("Get User Error:", errorMessage);
+                    }
 
-            // Chạy luồng cập nhật UI
-            updateUIThread.start();
-        }
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("Get User Error:", e.getMessage());
+                    }
+                });
+            }
+        });
+
+        // Chạy luồng mua vé
+        buyTicketThread.start();
+
+        // Tạo một luồng mới để cập nhật UI (nếu cần thiết)
+        Thread updateUIThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Chờ cho luồng mua vé hoàn thành trước khi cập nhật UI
+                try {
+                    buyTicketThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                // Cập nhật giao diện người dùng ở đây (nếu cần thiết)
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        createBarcode();
+                        adapterTicket = new ETicketAdapter(ticketInfo);
+                        recyclerViewTicket.setAdapter(adapterTicket);
+                    }
+                });
+            }
+        });
+
+        // Chạy luồng cập nhật UI
+        updateUIThread.start();
+    }
 
     //Notification
     private void sendNotification() {
@@ -310,6 +310,9 @@ public class ETicket extends AppCompatActivity {
         }else{
             minute = minute -30;
         }
+
+//        sb-l3yjq28975902@personal.example.com
+//                ph&!GY4X
 
         String []dateArr = date.split("-");
         int day = Integer.parseInt(dateArr[0].trim());
