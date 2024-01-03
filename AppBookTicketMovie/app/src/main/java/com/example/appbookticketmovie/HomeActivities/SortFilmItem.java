@@ -115,6 +115,5 @@ public class SortFilmItem extends AppCompatActivity {
         search = findViewById(R.id.searchItem);
         backImg = findViewById(R.id.backImg);
 
-
     }
 }

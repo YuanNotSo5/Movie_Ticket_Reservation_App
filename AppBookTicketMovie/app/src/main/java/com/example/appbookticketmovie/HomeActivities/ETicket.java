@@ -221,6 +221,7 @@ public class ETicket extends AppCompatActivity {
                 .setSmallIcon(R.drawable.avatar)
                 .setLargeIcon(bitmap)
                 .build();
+
         //Khai báo notification Manager
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {

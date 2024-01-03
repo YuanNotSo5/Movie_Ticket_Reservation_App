@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appbookticketmovie.Adapter.SearchAdapter;
@@ -23,15 +25,15 @@ public class SortFilmActors extends AppCompatActivity {
 
     RecyclerView containerFilmActor;
     EditText search;
-
     TextView searchResultTxt;
     private RecyclerView.Adapter adapterFilm;
     private long idActor;
-
     private FilmService filmService = new FilmService();
     private ListFilm listTemp;
     ArrayList<FilmItem> searchResults = new ArrayList<>();
     ArrayList<FilmItem> originalList = new ArrayList<>();
+
+    ImageView backImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,13 @@ public class SortFilmActors extends AppCompatActivity {
         idActor = getIntent().getLongExtra("idActor",0);
         searchResultTxt.setText(getIntent().getStringExtra("nameActor").toString());
         getListFilm();
+
+        backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -103,5 +112,6 @@ public class SortFilmActors extends AppCompatActivity {
         containerFilmActor.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         searchResultTxt = findViewById(R.id.searchResultTxt);
         search = findViewById(R.id.searchItem);
+        backImg = findViewById(R.id.backImg);
     }
 }

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="20dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -29,7 +30,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Phim" />
+                    android:text="Phim"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvNameFilmBill"
@@ -43,14 +45,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="x3" />
+                    android:text="x3"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvPerPriceBill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="120000" />
+                    android:text="120000"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout
@@ -63,7 +67,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Rạp" />
+                    android:text="Rạp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvNameCinemaBill"
@@ -82,7 +87,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Địa chỉ" />
+                    android:text="Địa chỉ"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvAddressBill"
@@ -101,7 +107,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Ngày xuất hóa đơn" />
+                    android:text="Ngày xuất hóa đơn"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvDateBuyBill"
@@ -122,7 +129,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Hình thức thanh toán" />
+                    android:text="Hình thức thanh toán"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvPayBillMethod"
@@ -148,7 +156,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Điểm thưởng" />
+                    android:text="Điểm thưởng"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvPointBill"
@@ -168,13 +177,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Tổng" />
+                    android:text="Tổng"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tvTotalAmountBill"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textColor="@color/dark_red_color"
                     android:text="TextView" />
             </LinearLayout>
         </LinearLayout>

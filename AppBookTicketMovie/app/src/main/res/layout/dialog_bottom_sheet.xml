@@ -88,8 +88,9 @@
                         android:id="@+id/ratingBarUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#FBF6F6"
+                        android:background="#00FBF6F6"
                         android:numStars="5"
+                        android:progressBackgroundTint="@color/white"
                         android:stepSize="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
