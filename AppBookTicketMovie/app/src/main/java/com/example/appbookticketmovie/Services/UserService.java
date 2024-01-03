@@ -367,6 +367,7 @@ public class UserService {
             data.put("point", item.getPoint());
             data.put("idBill", item.getIdBill());
             data.put("Film", item.getFilm());
+            data.put("qrcode", item.getQrcode());
 
             db.collection("User_Ticket")
                     .add(data)

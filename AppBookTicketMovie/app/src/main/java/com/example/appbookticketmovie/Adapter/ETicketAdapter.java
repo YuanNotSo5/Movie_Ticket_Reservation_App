@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appbookticketmovie.Models.Ticket;
@@ -62,13 +63,13 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
             public void onClick(View view) {
                 if(holder.convertBtn.getText()=="CONVERT TO QRCODE"){
                     holder.convertBtn.setText("CONVERT TO BARCODE");
-                    holder.barcode.setVisibility(View.GONE);
+                    holder.mainBarcode.setVisibility(View.GONE);
                     holder.qrcode.setVisibility(View.VISIBLE);
                 }
                 else{
                     holder.convertBtn.setText("CONVERT TO QRCODE");
                     holder.qrcode.setVisibility(View.GONE);
-                    holder.barcode.setVisibility(View.VISIBLE);
+                    holder.mainBarcode.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -85,6 +86,7 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
         TextView dateTxt, timeTxt, nameFilmTxt, addressTxt, roomTxt, seatTxt, typeSeatTxt, dateMainTxt, timeMainTxt, nameFilmMainTxt, addressMainTxt, roomMainTxt, seatMainTxt, typeSeatMainTxt;
         ImageView barcode, mainBarcode, qrcode;
         Button convertBtn;
+        CardView cardView, cardview1;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +108,9 @@ public class ETicketAdapter extends RecyclerView.Adapter <ETicketAdapter.ViewHol
             typeSeatMainTxt = itemView.findViewById(R.id.ticketSeatType);
             qrcode = itemView.findViewById(R.id.QrCode_Image);
             convertBtn = itemView.findViewById(R.id.convertBarcode);
+
+            cardView = itemView.findViewById(R.id.cardView);
+            cardview1 = itemView.findViewById(R.id.cardView2);
         }
     }
 }

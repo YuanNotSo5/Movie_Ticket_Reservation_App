@@ -224,6 +224,15 @@
                         android:rotation="0"
                         tools:srcCompat="@tools:sample/avatars" />
 
+                    <ImageView
+                        android:id="@+id/QrCode_Image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="12dp"
+                        android:rotation="0"
+                        tools:srcCompat="@tools:sample/avatars"
+                        android:visibility="gone"/>
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -238,13 +247,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView27"
                     android:visibility="gone">
 
-                    <ImageView
-                        android:id="@+id/QrCode_Image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="12dp"
-                        android:rotation="0"
-                        tools:srcCompat="@tools:sample/avatars" />
+
 
                 </androidx.cardview.widget.CardView>
 
