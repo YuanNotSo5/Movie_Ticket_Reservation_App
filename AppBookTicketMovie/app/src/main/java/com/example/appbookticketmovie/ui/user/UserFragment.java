@@ -24,13 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.appbookticketmovie.Adapter.CinemaAdapter;
 import com.example.appbookticketmovie.Adapter.FavoriteFilmAdapter;
 import com.example.appbookticketmovie.Adapter.HistoryBillAdapter;
 import com.example.appbookticketmovie.HomeActivities.LoginActivity;
 import com.example.appbookticketmovie.HomeActivities.RegisterActivity;
 import com.example.appbookticketmovie.HomeActivities.UpdateAccountActivity;
-import com.example.appbookticketmovie.Models.Bill;
 import com.example.appbookticketmovie.Models.ListBill;
 import com.example.appbookticketmovie.Models.ListFilmFavorite;
 import com.example.appbookticketmovie.Models.User;
@@ -45,13 +43,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class UserFragment extends Fragment {
     private long idUser = -1;
-
     private FragmentUserBinding binding;
     private UserViewModel userViewModel;
     private VideoView backgroundView;
@@ -60,16 +55,17 @@ public class UserFragment extends Fragment {
     private GoogleSignInClient googleSignInClient;
     private UserService userService;
     private FilmService filmService = new FilmService();
-
     private LinearLayout historyBtn, favBtn, pointBtn;
-
     private RecyclerView containerContent;
     private RecyclerView.Adapter adapterContainer;
     private boolean isHistoryBtnClicked = false;
     private boolean isFavBtnClicked = false;
     private boolean isPointBtnClicked = false;
 
+    private int favorites = 0;
+    private int bills = 0;
 
+    TextView tvFavorite, tvTickets;
     public static UserFragment newInstance() {
         return new UserFragment();
     }
@@ -83,6 +79,10 @@ public class UserFragment extends Fragment {
 
         ImageView settingBtn = binding.settingsBtn;
         ImageView logoutBtn = binding.logoutBtn;
+
+        tvFavorite = binding.tvFavorite;
+        tvTickets = binding.tvTickets;
+
 
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +139,9 @@ public class UserFragment extends Fragment {
             public void getUser(User user) {
                 if(user != null) {
                     idUser = user.getId();
+
+                    countFavorite();
+                    countBill();
                     userService.getBillById(idUser, new UserService.HistoryBillReceivedListener() {
                         @Override
                         public void onSuccess(ArrayList<ListBill> listBill) {
@@ -207,7 +210,7 @@ public class UserFragment extends Fragment {
                 }
                 else {
                     isFavBtnClicked = true;
-                    Toast.makeText(requireContext(), "Your favorite film", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Your favorites film", Toast.LENGTH_SHORT).show();
 
                     filmService.getFavoriteList(idUser, new FilmService.OnFilmFavoriteFrequentDataReceivedListener() {
                         @Override
@@ -233,10 +236,6 @@ public class UserFragment extends Fragment {
                 }
                 else {
                     isPointBtnClicked = true;
-
-
-
-
                 }
             }
         });
@@ -256,6 +255,48 @@ public class UserFragment extends Fragment {
         else{
             getUserInfo();
         }
+    }
+
+    public void countBill(){
+        userService.getBillById(idUser, new UserService.HistoryBillReceivedListener() {
+            @Override
+            public void onSuccess(ArrayList<ListBill> listBill) {
+                bills = listBill.size();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTickets.setText(String.valueOf(bills));
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+    }
+
+    public void countFavorite(){
+        filmService.getFavoriteList(idUser, new FilmService.OnFilmFavoriteFrequentDataReceivedListener() {
+            @Override
+            public void onSuccess(ArrayList<ListFilmFavorite> listFavoriteFilm) {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        favorites = listFavoriteFilm.size();
+                        tvFavorite.setText(String.valueOf(favorites));
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 
 

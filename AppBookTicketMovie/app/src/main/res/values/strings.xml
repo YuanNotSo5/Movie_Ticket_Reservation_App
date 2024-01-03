@@ -6,9 +6,13 @@
     <string name="title_user">You</string>
     <string name="title_userinformation">Your Info</string>
 
-    <string name="client_id">13236320641-elgjjpumlm6q1su9964j49tgohr6e4c4.apps.googleusercontent.com</string>
-    <string name="paypal_clientID">AcoKgSwTMibtuK_raof0-_MqVLOq4ux0o-U7HATOWkbhGL_F5edhZJ-SvdTpGR8XdErBvk4HKqHaq9vd</string>
-    <string name="strike_text">1. <strike>StrikeThrough</strike> Using strike</string>
+    <string name="login_title">Login</string>
+    <string name="register_title">Register</string>
+    <string name="forgot_title">Forgot Password</string>
+
+    <string name="client_id" translatable="false">13236320641-elgjjpumlm6q1su9964j49tgohr6e4c4.apps.googleusercontent.com</string>
+    <string name="paypal_clientID" translatable="false">AcoKgSwTMibtuK_raof0-_MqVLOq4ux0o-U7HATOWkbhGL_F5edhZJ-SvdTpGR8XdErBvk4HKqHaq9vd</string>
+    <string name="strike_text" translatable="false">1. <strike>StrikeThrough</strike> Using strike</string>
 
 
 </resources>

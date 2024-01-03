@@ -36,12 +36,13 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
     private Map<Integer, ViewHolder> viewHolderMap;
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView day;
+        TextView day, dateInWk;
         LinearLayout day_layout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             day = itemView.findViewById(R.id.tvDay);
             day_layout = itemView.findViewById(R.id.day_layout);
+            dateInWk = itemView.findViewById(R.id.tvDate);
         }
     }
 
@@ -72,14 +73,39 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull DayListAdapter.ViewHolder holder, int position) {
+        viewHolderMap.put(position, holder);
         Date day = data.get(position);
         String currentDay = new SimpleDateFormat("dd", Locale.getDefault()).format(day);
 
-        viewHolderMap.put(position, holder);
         holder.day.setText(currentDay);
-        TextView view = holder.day;
+        int dayInWeek = day.getDay();
+        switch(dayInWeek){
+            case 0:
+                holder.dateInWk.setText("Sun");
+                break;
+            case 1:
+                holder.dateInWk.setText("Mon");
+                break;
+            case 2:
+                holder.dateInWk.setText("Tues");
+                break;
+            case 3:
+                holder.dateInWk.setText("Wed");
+                break;
+            case 4:
+                holder.dateInWk.setText("Thur");
+                break;
+            case 5:
+                holder.dateInWk.setText("Fri");
+                break;
+            case 6:
+                holder.dateInWk.setText("Sat");
+                break;
+            default:
+                break;
+        }
 
-        view.setOnClickListener(new View.OnClickListener() {
+        holder.day.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String dayClicked = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(data.get(position));
@@ -94,8 +120,8 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
                 }else{
                     cinemaListAdapter.updateExtraPrice(0.0);
                 }
-                updateBackground();
-                holder.day_layout.setBackgroundResource(R.drawable.date_background_selected);
+//                updateBackground();
+//                holder.day_layout.setBackgroundResource(R.drawable.date_background_selected);
             }
         });
 
@@ -109,7 +135,7 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
         return this.currDate;
     }
     public void updateBackground(){
-        for(int i = 0; i < getItemCount(); i++){
+        for(int i = 0; i < data.size(); i++){
             ViewHolder holder =  viewHolderMap.get(i);
             holder.day_layout.setBackgroundResource(R.drawable.date_background);
         }

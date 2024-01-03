@@ -210,7 +210,6 @@ public class LoginActivity extends AppCompatActivity {
     public void createAccount(GoogleSignInAccount account){
         String c = String.valueOf(count);
         User user = new User(Long.valueOf(c),account.getDisplayName(), account.getEmail(), account.getDisplayName());
-        user.setAvatar(account.getPhotoUrl().getPath());
 
         db.collection("Users").document(account.getEmail()).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

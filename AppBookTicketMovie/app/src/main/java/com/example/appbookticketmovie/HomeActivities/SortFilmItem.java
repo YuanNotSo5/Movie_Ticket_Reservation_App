@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appbookticketmovie.Adapter.FilmListAdapter;
@@ -23,9 +24,9 @@ import java.util.ArrayList;
 
 public class SortFilmItem extends AppCompatActivity {
 
+    ImageView backImg;
     RecyclerView containerFilm;
     EditText search;
-
     TextView searchResultTxt;
     private RecyclerView.Adapter adapterFilm;
     private long idCategory;
@@ -46,6 +47,12 @@ public class SortFilmItem extends AppCompatActivity {
         searchResultTxt.setText(getIntent().getStringExtra("name").toString());
         getListFilm();
 
+        backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -106,6 +113,8 @@ public class SortFilmItem extends AppCompatActivity {
         containerFilm.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         searchResultTxt = findViewById(R.id.searchResultTxt);
         search = findViewById(R.id.searchItem);
+        backImg = findViewById(R.id.backImg);
+
 
     }
 }
