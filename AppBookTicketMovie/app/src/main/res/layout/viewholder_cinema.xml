@@ -6,7 +6,7 @@
     android:layout_marginTop="20dp"
     android:background="@drawable/cinema_background"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:text="Cinema Name"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -50,7 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Địa chỉ"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:layout_marginTop="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

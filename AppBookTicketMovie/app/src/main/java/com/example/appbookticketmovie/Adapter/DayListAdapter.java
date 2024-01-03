@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -120,8 +121,8 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
                 }else{
                     cinemaListAdapter.updateExtraPrice(0.0);
                 }
-//                updateBackground();
-//                holder.day_layout.setBackgroundResource(R.drawable.date_background_selected);
+                updateBackground();
+                holder.day_layout.setBackgroundResource(R.drawable.date_background_selected);
             }
         });
 
@@ -135,10 +136,16 @@ public class DayListAdapter extends RecyclerView.Adapter<DayListAdapter.ViewHold
         return this.currDate;
     }
     public void updateBackground(){
-        for(int i = 0; i < data.size(); i++){
-            ViewHolder holder =  viewHolderMap.get(i);
-            holder.day_layout.setBackgroundResource(R.drawable.date_background);
+        try{
+            for(int i = 0; i < data.size(); i++){
+                ViewHolder holder =  viewHolderMap.get(i);
+                holder.day_layout.setBackgroundResource(R.drawable.date_background);
+            }
         }
+        catch (Exception e){
+
+        }
+
     }
     public void updateIntent(Intent seat){
         this.seat = seat;

@@ -270,7 +270,7 @@ public class BookMapSeat extends AppCompatActivity  implements View.OnClickListe
         } else if (status == STATUS_VIP) {
             if (selectedIds.contains(view.getId() + ",")) {
                 selectedIds = selectedIds.replace(+view.getId() + ",", "");
-                view.setBackgroundResource(R.drawable.ic_seats_book);
+                view.setBackgroundResource(R.drawable.ic_seats_reserved);
                 total = total - (price + VIP_PRICE);
                 totalAmount.setText(String.valueOf(total));
                 charMap[index] = 'V';
